@@ -58,6 +58,7 @@ float World::getMovementSpeed() const {
     return movementSpeed_;
 }
 
+// This is parts of an attempt to make alternative collision checks
 Vector2f World::getMaxMovement(Moveable* moveable, const Vector2f& direction) {
     const Vector2f size = moveable->getSize();
     const sf::RectangleShape rect = moveable->getRectangle();
