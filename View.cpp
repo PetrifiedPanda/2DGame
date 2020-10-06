@@ -1,0 +1,65 @@
+#include "View.h"
+
+View::View(sf::RenderWindow& window, Player* player, float scrollingSpeed) {
+    windowWidth_ = window.getSize().x;
+    windowHeight_ = window.getSize().y;
+
+    windowView_ = statView_ = window.getDefaultView();
+    viewDifference_ = Vector2f(0, 0);
+
+    player_ = player;
+    originalPlayerSize_ = player->getSize().y;
+
+    scrollingSpeed_ = scrollingSpeed;
+}
+
+void View::update(const float elapsedTime) {
+    viewDifference_ = statView_.getCenter() - windowView_.getCenter();
+
+    const Vector2f playerPosOnWindow = getPositionOnWindow(player_->getPosition());
+
+    const Vector2f playerMovement = playerPosOnWindow - getPositionOnWindow(prevPlayerPos_);
+
+    const Vector2f playerSize = player_->getSize();
+
+    Vector2f newCenter = windowView_.getCenter();
+
+    const float windowWidthFifth = windowWidth_ / 5.0f;
+
+    const float scrollingDistance = scrollingSpeed_ * elapsedTime;
+
+    if (playerMovement.x > 0 && playerPosOnWindow.x + playerSize.x > windowWidthFifth * 2) {  // Player is moving right
+        newCenter += Vector2f(scrollingDistance, 0);
+    } else if (playerMovement.x < 0 && playerPosOnWindow.x < windowWidthFifth * 3) {  // Player is moving left
+        newCenter -= Vector2f(scrollingDistance, 0);
+    }
+
+    if (playerMovement.y > 0 && playerPosOnWindow.y + playerSize.y > windowHeight_ - originalPlayerSize_ * 2) {  // Player is moving down
+        newCenter += Vector2f(0, scrollingDistance);
+    } else if (playerMovement.y < 0 && playerPosOnWindow.y < windowHeight_ / 5 * 3) {  // Player is moving up
+        newCenter -= Vector2f(0, scrollingDistance);
+    }
+
+    windowView_.setCenter(newCenter);
+    prevPlayerPos_ = player_->getPosition();
+}
+
+sf::View View::getWindowView() const {
+    return windowView_;
+}
+
+sf::View View::getStatView() const {
+    return statView_;
+}
+
+Vector2f View::getPositionInGame(const Vector2f& positionOnWindow) const {
+    return positionOnWindow - viewDifference_;
+}
+
+Vector2f View::getPositionOnWindow(const Vector2f& positionInGame) const {
+    return positionInGame + viewDifference_;
+}
+
+Vector2f View::getViewDifference() const {
+    return viewDifference_;
+}
