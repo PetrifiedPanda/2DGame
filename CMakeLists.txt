@@ -24,4 +24,4 @@ set(Sources
 
 add_executable(${This} ${Sources})
 
-target_link_libraries(${This} sfml-graphics sfml-audio sfml-window sfml-system sfml-audio)
+target_link_libraries(${This} sfml-graphics sfml-audio sfml-window sfml-system sfml-audio gomp)
