@@ -69,13 +69,13 @@ int main() {
     stats.setString(fpsString + statString);
 
     sf::Font font;
-    font.loadFromFile("../resources/font/Font.ttf");
+    font.loadFromFile("resources/font/Font.ttf");
 
     stats.setFont(font);
     stats.setCharacterSize(12);
     stats.setFillColor(sf::Color::Green);
 
-    SoundManager soundManager("../resources/sound/BackgroundMusic.wav", "../resources/sound/Collision.wav", "../resources/sound/Death.wav");
+    SoundManager soundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav");
 
     soundManager.playSoundTrack();
 
