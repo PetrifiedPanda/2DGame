@@ -22,6 +22,10 @@ set(Sources
     Utility/AverageCollector.cpp
 )
 
+# set(SFML_STATIC_LIBRARIES TRUE) # For linking SFML statically
+
+set(SFML_DIR path_to_SFML) # Replace path with path to folder with SFMLConfig.cmake
+
 find_package(SFML 2.5 COMPONENTS network audio graphics window system REQUIRED)
 find_package(OpenMP)
 
