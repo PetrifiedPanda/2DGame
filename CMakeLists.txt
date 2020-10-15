@@ -22,6 +22,16 @@ set(Sources
     Utility/AverageCollector.cpp
 )
 
+find_package(SFML 2.5 COMPONENTS network audio graphics window system REQUIRED)
+find_package(OpenMP)
+
+
 add_executable(${This} ${Sources})
 
-target_link_libraries(${This} sfml-graphics sfml-audio sfml-window sfml-system sfml-audio gomp)
+if (SFML_FOUND)
+    if (OpenMP_CXX_FOUND)
+        target_link_libraries(${This} PUBLIC sfml-graphics sfml-audio sfml-window sfml-system sfml-audio OpenMP::OpenMP_CXX)
+    else()
+        target_link_libraries(${This} sfml-graphics sfml-audio sfml-window sfml-system sfml-audio)
+    endif()
+endif()
