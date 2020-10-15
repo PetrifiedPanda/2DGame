@@ -1,14 +1,15 @@
 #include <chrono>
 
-#include "Enemy.h"
-#include "Global.h"
-#include "GrowingPlayer.h"
-#include "Player.h"
 #include "SFML/Graphics.hpp"
-#include "SoundManager.h"
+
 #include "Utility/Timer.h"
-#include "View.h"
+
+#include "Global.h"
 #include "World.h"
+#include "View.h"
+#include "Enemy.h"
+#include "GrowingPlayer.h"
+#include "SoundManager.h"
 
 #define EDITOR
 
