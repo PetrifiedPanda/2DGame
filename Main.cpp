@@ -136,6 +136,7 @@ int main() {
 // Update stats
 #ifdef EDITOR
             worldStats =
+                "Cores: " + std::to_string(omp_get_max_threads()) + "\n" +
                 "Moveables: " + std::to_string(world.getMoveableCount()) + "\n" +
                 "Static Rectangles: " + std::to_string(world.getStaticRectangleCount()) + "\n";
 
