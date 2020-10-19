@@ -11,7 +11,7 @@ enum class MoveableType {
 };
 
 class Moveable {
-    static const int idNullValue = -1;
+    static const int s_idNullValue = -1;
     int id_;
 
    protected:

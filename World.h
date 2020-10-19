@@ -25,8 +25,8 @@ class World {
     float movementSpeed_;
     float gravity_;
 
-    static const short rectangleLimit_ = 500;
-    static const short moveableLimit_ = 128;
+    static const short s_rectangleLimit = 500;
+    static const short s_moveableLimit = 128;
 
    public:
     SoundManager soundManager = SoundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav", "resources/sound/Pause.wav");

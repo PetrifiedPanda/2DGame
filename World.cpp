@@ -1,13 +1,13 @@
 #include "World.h"
 
 World::World(const float movementSpeed, const float gravity) : idCounter_(0), movementSpeed_(movementSpeed), gravity_(gravity), player_(nullptr) {
-    staticRectangles_.reserve(rectangleLimit_);
-    moveables_.reserve(moveableLimit_);
+    staticRectangles_.reserve(s_rectangleLimit);
+    moveables_.reserve(s_moveableLimit);
     killNextFrame_.reserve(5);
 }
 
 void World::addMoveable(std::unique_ptr<Moveable>&& moveable) {
-    if (moveables_.size() < static_cast<size_t>(moveableLimit_)) {
+    if (moveables_.size() < static_cast<size_t>(s_moveableLimit)) {
         moveables_.push_back(std::move(moveable));
         moveables_[moveables_.size() - 1]->setID(idCounter_);
         soundManager.addEntitySound(idCounter_);
@@ -16,12 +16,12 @@ void World::addMoveable(std::unique_ptr<Moveable>&& moveable) {
 }
 
 void World::addRectangle(const sf::RectangleShape& rectangle) {
-    if (staticRectangles_.size() < static_cast<size_t>(rectangleLimit_))
+    if (staticRectangles_.size() < static_cast<size_t>(s_rectangleLimit))
         staticRectangles_.push_back(rectangle);
 }
 
 void World::addPlayer(std::unique_ptr<Moveable>&& player) {
-    if (moveables_.size() < static_cast<size_t>(moveableLimit_)) {
+    if (moveables_.size() < static_cast<size_t>(s_moveableLimit)) {
         player_ = player.get();
         moveables_.push_back(std::move(player));
         moveables_[moveables_.size() - 1]->setID(idCounter_);

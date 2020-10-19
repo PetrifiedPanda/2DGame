@@ -1,8 +1,8 @@
 #include "Moveable.h"
 
-Moveable::Moveable() : rectangle_(), id_(idNullValue) {}
+Moveable::Moveable() : rectangle_(), id_(s_idNullValue) {}
 
-Moveable::Moveable(const sf::Vector2f& position, const sf::Vector2f& size) : rectangle_(), id_(idNullValue) {
+Moveable::Moveable(const sf::Vector2f& position, const sf::Vector2f& size) : rectangle_(), id_(s_idNullValue) {
     setPosition(position);
     setSize(size);
 }
@@ -112,7 +112,7 @@ int Moveable::getID() const {
 }
 
 void Moveable::setID(int newID) {
-    if (id_ != idNullValue)  // Making sure the id only gets changed once
+    if (id_ != s_idNullValue)  // Making sure the id only gets changed once
         throw std::runtime_error("ID may not be changed");
 
     id_ = newID;
