@@ -12,13 +12,10 @@ void GrowingPlayer::update(const float elapsedTime, sf::RenderWindow& window, Wo
             growthTarget_ = sf::Vector2f(0, 0);
             isGrowing_ = false;
         } else {
-            const float movementSpeed = world.getMovementSpeed();
+            const float growthFactor = world.getMovementSpeed() / 10.0f * elapsedTime;
 
-            const float growthFactorX = movementSpeed / 10.0f * elapsedTime;
-            const float growthFactorY = movementSpeed / 10.0f * elapsedTime;
-
-            float newSizeX = growthFactorX + size.x;
-            float newSizeY = growthFactorY + size.y;
+            float newSizeX = growthFactor + size.x;
+            float newSizeY = growthFactor + size.y;
 
             if (newSizeX > growthTarget_.x)
                 newSizeX = growthTarget_.x;
@@ -26,13 +23,13 @@ void GrowingPlayer::update(const float elapsedTime, sf::RenderWindow& window, Wo
             if (newSizeY > growthTarget_.y)
                 newSizeY = growthTarget_.y;
 
-            const sf::Vector2f position = getPosition();
+            const sf::Vector2f oldPosition = getPosition();
             setSize(sf::Vector2f(newSizeX, newSizeY));
-            move(sf::Vector2f(-growthFactorX, -growthFactorY));
+            move(sf::Vector2f(-growthFactor, -growthFactor));
 
             if (!world.canMoveInDirection(this, sf::Vector2f(0, 0))) {
                 setSize(size);
-                setPosition(position);
+                setPosition(oldPosition);
             }
         }
     }
