@@ -5,6 +5,17 @@
 #include "Global.h"
 
 class SoundManager {
+    sf::SoundBuffer soundtrackBuffer_;
+
+    sf::SoundBuffer collisionSoundBuffer_;
+    sf::SoundBuffer deathSoundBuffer_;
+
+    sf::Sound soundTrackSound_;
+    std::unordered_map<int, sf::Sound> entitySounds_;
+
+    std::vector<int> deadIDs_;
+    static const int soundLimit = 200;
+
    public:
     SoundManager(const std::string& soundTrackFile, const std::string& collisionSoundFile, const std::string& deathSoundFile);
 
@@ -20,15 +31,4 @@ class SoundManager {
 
    private:
     void playEntitySound(int entityID, sf::SoundBuffer& buffer);
-
-    sf::SoundBuffer soundtrackBuffer_;
-
-    sf::SoundBuffer collisionSoundBuffer_;
-    sf::SoundBuffer deathSoundBuffer_;
-
-    sf::Sound soundTrackSound_;
-    std::unordered_map<int, sf::Sound> entitySounds_;
-
-    std::vector<int> deadIDs_;
-    static const int soundLimit = 200;
 };

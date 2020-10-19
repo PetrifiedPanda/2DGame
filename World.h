@@ -14,6 +14,21 @@ using sf::Vector2f;
 class Moveable;
 
 class World {
+    std::vector<sf::RectangleShape> staticRectangles_;
+    std::vector<std::unique_ptr<Moveable>> moveables_;
+
+    std::vector<Moveable*> killNextFrame_;
+
+    int idCounter_;
+
+    Moveable* player_;
+
+    float movementSpeed_;
+    float gravity_;
+
+    static const short rectangleLimit_ = 500;
+    static const short moveableLimit_ = 128;
+
    public:
     World();
     World(float movementSpeed, float gravity);
@@ -51,21 +66,6 @@ class World {
 
     static bool cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<Vector2f, 4>& corners);
     static std::array<Vector2f, 4> findCorners(const Vector2f& position, const Vector2f& size);
-
-    std::vector<sf::RectangleShape> staticRectangles_;
-    std::vector<std::unique_ptr<Moveable>> moveables_;
-
-    std::vector<Moveable*> killNextFrame_;
-
-    int idCounter_;
-
-    Moveable* player_;
-
-    float movementSpeed_;
-    float gravity_;
-
-    const short rectangleLimit_ = 500;
-    const short moveableLimit_ = 128;
 };
 
 #include "Moveable.h"

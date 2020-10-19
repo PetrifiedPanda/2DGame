@@ -10,6 +10,16 @@ enum class MoveableType {
 };
 
 class Moveable {
+    static const int idNullValue = -1;
+    int id_;
+
+   protected:
+    sf::RectangleShape rectangle_;
+
+    Vector2f force_;
+
+    SoundManager& soundManager_;
+
    public:
     explicit Moveable(SoundManager& soundManager);
     explicit Moveable(const Vector2f& position, SoundManager& soundManager);
@@ -42,14 +52,4 @@ class Moveable {
     void setFillColor(const sf::Color& color);
     void setOutlineColor(const sf::Color& color);
     void setOutlineThickness(float thickness);
-
-    sf::RectangleShape rectangle_;
-
-    Vector2f force_;
-
-    SoundManager& soundManager_;
-
-   private:
-    int id_;
-    static const int idNullValue = -1;
 };
