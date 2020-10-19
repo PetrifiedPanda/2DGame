@@ -11,7 +11,7 @@ Moveable::Moveable(const Vector2f& position, SoundManager& soundManager) : sound
 
 Moveable::~Moveable() = default;
 
-void Moveable::update(const float elapsedTime, sf::RenderWindow& window, World& world) {  // Gravity is now handled here, meaning every override should call this, so gravity can be applied
+void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World& world) {
     const Vector2f gravityDirection(0, elapsedTime * world.getGravity());
     if (world.canMoveInDirection(this, gravityDirection))
         move(gravityDirection);

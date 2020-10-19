@@ -25,7 +25,8 @@ class Moveable {
     explicit Moveable(const Vector2f& position, SoundManager& soundManager);
     virtual ~Moveable();
 
-    virtual void update(float elapsedTime, sf::RenderWindow& window, World& world);
+    virtual void update(float elapsedTime, sf::RenderWindow& window, World& world) = 0;
+    void gravityUpdate(float elapsedTime, sf::RenderWindow& window, World& world);
 
     void addForce(const Vector2f& force);
 

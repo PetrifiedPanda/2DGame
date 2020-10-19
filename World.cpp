@@ -271,8 +271,10 @@ void World::update(const float elapsedTime, sf::RenderWindow& window, Moveable* 
     const int size = moveables_.size();
 
     for (auto& moveable : moveables_) {
-        if (moveable.get() != draggedMoveable)
+        if (moveable.get() != draggedMoveable) {
             moveable->update(elapsedTime, window, *this);
+            moveable->gravityUpdate(elapsedTime, window, *this);
+        }
     }
 }
 
