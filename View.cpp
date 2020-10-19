@@ -1,17 +1,14 @@
 #include "View.h"
 
-View::View(sf::RenderWindow& window, Player* player, float scrollingSpeed) {
-    windowWidth_ = window.getSize().x;
-    windowHeight_ = window.getSize().y;
-
-    windowView_ = statView_ = window.getDefaultView();
-    viewDifference_ = sf::Vector2f(0, 0);
-
-    player_ = player;
-    originalPlayerSize_ = player->getSize().y;
-
-    scrollingSpeed_ = scrollingSpeed;
-}
+View::View(sf::RenderWindow& window, Player* player, float scrollingSpeed)
+    : windowWidth_(window.getSize().x),
+      windowHeight_(window.getSize().y),
+      viewDifference_(0.0f, 0.0f),
+      windowView_(window.getDefaultView()),
+      statView_(window.getDefaultView()),
+      player_(player),
+      originalPlayerSize_(player->getSize().y),
+      scrollingSpeed_(scrollingSpeed) {}
 
 void View::update(const float elapsedTime) {
     viewDifference_ = statView_.getCenter() - windowView_.getCenter();
