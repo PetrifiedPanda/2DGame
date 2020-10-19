@@ -1,28 +1,43 @@
 #include "SoundManager.h"
 
-SoundManager::SoundManager(const std::string& soundTrackFile, const std::string& collisionSoundFile, const std::string& deathSoundFile) {
+SoundManager::SoundManager(const std::string& soundTrackFile, const std::string& collisionSoundFile, const std::string& deathSoundFile, const std::string& pauseSoundFile) {
     soundtrackBuffer_.loadFromFile(soundTrackFile);
-    collisionSoundBuffer_.loadFromFile(collisionSoundFile);
-    deathSoundBuffer_.loadFromFile(deathSoundFile);
+    collisionBuffer_.loadFromFile(collisionSoundFile);
+    deathBuffer_.loadFromFile(deathSoundFile);
+    pauseBuffer_.loadFromFile(pauseSoundFile);
 
-    soundTrackSound_.setBuffer(soundtrackBuffer_);
-    soundTrackSound_.setVolume(g_musicVolume * (g_masterVolume / 100));
-    soundTrackSound_.setPitch(1.0f);
-    soundTrackSound_.setLoop(true);
+    soundtrackSound_.setBuffer(soundtrackBuffer_);
+    soundtrackSound_.setVolume(g_musicVolume * (g_masterVolume / 100));
+    soundtrackSound_.setPitch(1.0f);
+    soundtrackSound_.setLoop(true);
+
+    pauseSound_.setBuffer(pauseBuffer_);
 
     deadIDs_.reserve(soundLimit);
 }
 
 void SoundManager::playSoundTrack() {
-    soundTrackSound_.play();
+    soundtrackSound_.play();
 }
 
 void SoundManager::pauseSoundTrack() {
-    soundTrackSound_.pause();
+    soundtrackSound_.pause();
 }
 
 void SoundManager::stopSoundTrack() {
-    soundTrackSound_.stop();
+    soundtrackSound_.stop();
+}
+
+void SoundManager::playPauseSound() {
+    pauseSound_.play();
+}
+
+void SoundManager::pausePauseSound() {
+    pauseSound_.pause();
+}
+
+void SoundManager::stopPauseSound() {
+    pauseSound_.stop();
 }
 
 void SoundManager::addEntitySound(int entityID) {
@@ -40,11 +55,11 @@ void SoundManager::removeEntity(int entityID) {
 }
 
 void SoundManager::playCollisionSound(int entityID) {
-    playEntitySound(entityID, collisionSoundBuffer_);
+    playEntitySound(entityID, collisionBuffer_);
 }
 
 void SoundManager::playDeathSound(int entityID) {
-    playEntitySound(entityID, deathSoundBuffer_);
+    playEntitySound(entityID, deathBuffer_);
 }
 
 void SoundManager::playEntitySound(int entityID, sf::SoundBuffer& buffer) {

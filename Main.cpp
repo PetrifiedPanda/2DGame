@@ -21,7 +21,7 @@ void spawnEnemy(World& world, const sf::Vector2f& position);
 void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable);
 void handleWindowResize(sf::Event& event);
 void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable);
-void handleKeyboardEvents(sf::Event& event, bool& pause, bool& pauseReleased);
+void handleKeyboardEvents(sf::Event& event, World& world, bool& pause, bool& pauseReleased);
 
 struct Colors {
     sf::Color playerColor = sf::Color::Blue;
@@ -207,11 +207,11 @@ void addPillar(World& world, const sf::Vector2f& position, const float width, co
 
 void spawnEnemy(World& world, const sf::Vector2f& position) {
     const Colors colors;
-
-    Enemy enemy(position, playerSize, colors.enemyColor);
+    sf::Vector2f size(playerSize.x * 4.0f, playerSize.y * 4.0f);
+    Enemy enemy(position, size, colors.enemyColor);
 
     if (world.canMoveInDirection(&enemy, sf::Vector2f(0, 0)))
-        world.addMoveable(std::make_unique<SplitterEnemy>(position, playerSize, colors.enemyColor));
+        world.addMoveable(std::make_unique<SplitterEnemy>(position, size, colors.enemyColor));
 }
 
 void handleWindowResize(sf::Event& event) {
@@ -249,7 +249,7 @@ void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, boo
         handleMouseEvents(event, world, window, view, mouseOffset, selectedMoveable, draggedMoveable);
 #endif
 
-        handleKeyboardEvents(event, pause, pauseReleased);
+        handleKeyboardEvents(event, world, pause, pauseReleased);
     }
 }
 
@@ -277,14 +277,21 @@ void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window,
 }
 #endif
 
-void handleKeyboardEvents(sf::Event& event, bool& pause, bool& pauseReleased) {
+void handleKeyboardEvents(sf::Event& event, World& world, bool& pause, bool& pauseReleased) {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape) {
         if (pause) {
-            if (pauseReleased)
+            if (pauseReleased) {
                 pause = false;
+
+                world.soundManager.stopPauseSound();
+                world.soundManager.playSoundTrack();
+            }
         } else {
             pause = true;
             pauseReleased = false;
+
+            world.soundManager.pauseSoundTrack();
+            world.soundManager.playPauseSound();
         }
     }
 

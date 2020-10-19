@@ -29,7 +29,7 @@ class World {
     static const short moveableLimit_ = 128;
 
    public:
-    SoundManager soundManager = SoundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav");
+    SoundManager soundManager = SoundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav", "resources/sound/Pause.wav");
     World(float movementSpeed = 100.0f, float gravity = 0.0f);
 
     void addMoveable(std::unique_ptr<Moveable>&& moveable);
