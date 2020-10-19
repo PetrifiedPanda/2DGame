@@ -6,6 +6,10 @@
 #include "Player.h"
 
 class Enemy : public Moveable {
+    sf::RectangleShape hitBox_;
+
+    bool movingLeft_;
+
    public:
     explicit Enemy(SoundManager& soundManager);
     Enemy(Vector2f position, float playerSizeX, float playerSizeY, sf::Color enemyColor, SoundManager& soundManager);
@@ -24,8 +28,4 @@ class Enemy : public Moveable {
     void repositionHitBox();
 
     bool isAttacked(Moveable* player) const;
-
-    sf::RectangleShape hitBox_;
-
-    bool movingLeft_;
 };
