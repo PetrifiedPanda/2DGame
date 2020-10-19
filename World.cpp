@@ -1,25 +1,17 @@
 #include "World.h"
 
-World::World() : idCounter_(0) {
-    movementSpeed_ = 100;
-    gravity_ = 0;
-    player_ = nullptr;
-
+World::World(const float movementSpeed, const float gravity) : idCounter_(0), movementSpeed_(movementSpeed), gravity_(gravity), player_(nullptr) {
     staticRectangles_.reserve(rectangleLimit_);
     moveables_.reserve(moveableLimit_);
     killNextFrame_.reserve(5);
-}
-
-World::World(const float movementSpeed, const float gravity) : World() {
-    movementSpeed_ = movementSpeed;
-    gravity_ = gravity;
 }
 
 void World::addMoveable(std::unique_ptr<Moveable>&& moveable) {
     if (moveables_.size() < static_cast<size_t>(moveableLimit_)) {
         moveables_.push_back(std::move(moveable));
         moveables_[moveables_.size() - 1]->setID(idCounter_);
-        idCounter_++;
+        soundManager.addEntitySound(idCounter_);
+        ++idCounter_;
     }
 }
 

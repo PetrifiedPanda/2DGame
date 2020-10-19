@@ -12,8 +12,8 @@ class Player : public Moveable {
     bool jumping_;
 
    public:
-    explicit Player(SoundManager& soundManager);
-    Player(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color playerColor, SoundManager& soundManager);
+    Player();
+    Player(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color playerColor);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 

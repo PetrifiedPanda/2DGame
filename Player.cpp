@@ -1,9 +1,9 @@
 #include "Player.h"
 
-Player::Player(SoundManager& soundManager) : Moveable(soundManager), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {}
+Player::Player() : Moveable(), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {}
 
-Player::Player(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor, SoundManager& soundManager)
-    : Moveable(soundManager, position, size), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {
+Player::Player(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor)
+    : Moveable(position, size), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {
     setFillColor(playerColor);
     setOutlineColor(sf::Color::Green);
     setOutlineThickness(size.x / 10);
@@ -69,7 +69,7 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
     if (world.canMoveInDirection(this, verticalDirectionVector)) {
         move(verticalDirectionVector);
     } else {
-        soundManager_.playCollisionSound(getID());
+        world.soundManager.playCollisionSound(getID());
         jumping_ = false;  // Reset jump if you can't go further up
         jumpHeight_ = 0;
     }
@@ -79,7 +79,7 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
     if (world.canMoveInDirection(this, horizontalDirectionVector))
         move(horizontalDirectionVector);
     else
-        soundManager_.playCollisionSound(getID());
+        world.soundManager.playCollisionSound(getID());
 }
 
 void Player::onEnemyKill() {

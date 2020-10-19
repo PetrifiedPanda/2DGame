@@ -16,6 +16,7 @@ set(Sources
     SoundManager.cpp
     Moveable.cpp
     Enemy.cpp
+    SplitterEnemy.cpp
     Player.cpp
     GrowingPlayer.cpp
     Utility/Timer.cpp

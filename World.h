@@ -8,6 +8,7 @@
 #include "Utility/Timer.h"
 
 #include "Global.h"
+#include "SoundManager.h"
 
 class Moveable;
 
@@ -28,8 +29,8 @@ class World {
     static const short moveableLimit_ = 128;
 
    public:
-    World();
-    World(float movementSpeed, float gravity);
+    SoundManager soundManager = SoundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav");
+    World(float movementSpeed = 100.0f, float gravity = 0.0f);
 
     void addMoveable(std::unique_ptr<Moveable>&& moveable);
     void addRectangle(const sf::RectangleShape& rectangle);

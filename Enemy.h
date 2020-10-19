@@ -11,8 +11,8 @@ class Enemy : public Moveable {
     bool movingLeft_;
 
    public:
-    explicit Enemy(SoundManager& soundManager);
-    Enemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, SoundManager& soundManager);
+    Enemy();
+    Enemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 

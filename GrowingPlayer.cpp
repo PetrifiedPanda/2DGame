@@ -1,9 +1,9 @@
 #include "GrowingPlayer.h"
 
-GrowingPlayer::GrowingPlayer(SoundManager& soundManager) : Player(soundManager), isGrowing_(false), growthTarget_(0, 0) {}
+GrowingPlayer::GrowingPlayer() : Player(), isGrowing_(false), growthTarget_(0, 0) {}
 
-GrowingPlayer::GrowingPlayer(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor, SoundManager& soundManager)
-    : Player(position, size, playerColor, soundManager), isGrowing_(false), growthTarget_(0, 0) {}
+GrowingPlayer::GrowingPlayer(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor)
+    : Player(position, size, playerColor), isGrowing_(false), growthTarget_(0, 0) {}
 
 void GrowingPlayer::update(const float elapsedTime, sf::RenderWindow& window, World& world) {
     if (isGrowing_) {

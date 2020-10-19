@@ -1,9 +1,9 @@
 #include "Enemy.h"
 
-Enemy::Enemy(SoundManager& soundManager) : Moveable(soundManager), hitBox_(), movingLeft_(false) {}
+Enemy::Enemy() : Moveable(), hitBox_(), movingLeft_(false) {}
 
-Enemy::Enemy(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color enemyColor, SoundManager& soundManager)
-    : Moveable(soundManager), hitBox_(), movingLeft_(false) {
+Enemy::Enemy(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color enemyColor)
+    : Moveable(), hitBox_(), movingLeft_(false) {
     setFillColor(enemyColor);
     Enemy::setSize(size);
     Enemy::setPosition(position);
@@ -11,7 +11,7 @@ Enemy::Enemy(const sf::Vector2f& position, const sf::Vector2f& size, const sf::C
 
 void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& world) {
     if (isAttacked(world.getPlayer())) {
-        soundManager_.playDeathSound(getID());
+        world.soundManager.playDeathSound(getID());
         die(world);
         dynamic_cast<Player*>(world.getPlayer())->onEnemyKill();
         return;
@@ -29,7 +29,7 @@ void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& wor
         move(direction);
     } else {
         movingLeft_ = !movingLeft_;
-        soundManager_.playCollisionSound(getID());
+        world.soundManager.playCollisionSound(getID());
     }
 }
 
