@@ -1,12 +1,10 @@
 #include "Moveable.h"
 
-Moveable::Moveable(SoundManager& soundManager) : soundManager_(soundManager), id_(idNullValue) {
-    rectangle_ = sf::RectangleShape();
-}
+Moveable::Moveable(SoundManager& soundManager) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {}
 
-Moveable::Moveable(const Vector2f& position, SoundManager& soundManager) : soundManager_(soundManager), id_(idNullValue) {
-    rectangle_ = sf::RectangleShape();
-    Moveable::setPosition(position);
+Moveable::Moveable(SoundManager& soundManager, const Vector2f& position, const Vector2f& size) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {
+    setPosition(position);
+    setSize(size);
 }
 
 Moveable::~Moveable() = default;

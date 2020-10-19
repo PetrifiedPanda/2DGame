@@ -22,7 +22,7 @@ class Moveable {
 
    public:
     explicit Moveable(SoundManager& soundManager);
-    explicit Moveable(const Vector2f& position, SoundManager& soundManager);
+    explicit Moveable(SoundManager& soundManager, const Vector2f& position, const Vector2f& size);
     virtual ~Moveable();
 
     virtual void update(float elapsedTime, sf::RenderWindow& window, World& world) = 0;

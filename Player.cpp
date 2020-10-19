@@ -1,20 +1,12 @@
 #include "Player.h"
 
-Player::Player(SoundManager& soundManager) : Moveable(soundManager) {
-    movingUp_ = movingDown_ = movingLeft_ = movingRight_ = jumping_ = false;
-    jumpHeight_ = 0.0f;
-    maxJumpHeight_ = getSize().y * 7;
-}
+Player::Player(SoundManager& soundManager) : Moveable(soundManager), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {}
 
-Player::Player(const Vector2f& position, const float sizeX, const float sizeY, const sf::Color playerColor, SoundManager& soundManager) : Moveable(position, soundManager) {
+Player::Player(const Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor, SoundManager& soundManager)
+    : Moveable(soundManager, position, size), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {
     setFillColor(playerColor);
-    Moveable::setSize(Vector2f(sizeX, sizeY));
     setOutlineColor(sf::Color::Green);
-    setOutlineThickness(sizeX / 10);
-
-    movingUp_ = movingDown_ = movingLeft_ = movingRight_ = jumping_ = false;
-    jumpHeight_ = 0.0f;
-    maxJumpHeight_ = getSize().y * 7;
+    setOutlineThickness(size.x / 10);
 }
 
 void Player::update(const float elapsedTime, sf::RenderWindow& window, World& world) {
@@ -26,28 +18,25 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
     else
         onGround = true;
 
+    const float movementDistance = world.getMovementSpeed() * elapsedTime;
+
+    float verticalDirection = 0.0f;
+    float horizontalDirection = 0.0f;
+
     if (window.hasFocus()) {
         if (world.getGravity() == 0.0f) {
             if (sf::Keyboard::isKeyPressed(g_upKey))
-                movingUp_ = true;
-            else
-                movingUp_ = false;
+                verticalDirection -= movementDistance;
 
             if (sf::Keyboard::isKeyPressed(g_downKey))
-                movingDown_ = true;
-            else
-                movingDown_ = false;
+                verticalDirection += movementDistance;
         }
 
         if (sf::Keyboard::isKeyPressed(g_leftKey))
-            movingLeft_ = true;
-        else
-            movingLeft_ = false;
+            horizontalDirection -= movementDistance;
 
         if (sf::Keyboard::isKeyPressed(g_rightKey))
-            movingRight_ = true;
-        else
-            movingRight_ = false;
+            horizontalDirection += movementDistance;
 
         if (sf::Keyboard::isKeyPressed(g_jumpKey)) {
             if (onGround)
@@ -57,23 +46,6 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
             jumpHeight_ = 0.0f;
         }
     }
-
-    const float movementDistance = world.getMovementSpeed() * elapsedTime;
-
-    float verticalDirection = 0.0f;
-    float horizontalDirection = 0.0f;
-
-    if (movingUp_)
-        verticalDirection -= movementDistance;
-
-    if (movingDown_)
-        verticalDirection += movementDistance;
-
-    if (movingLeft_)
-        horizontalDirection -= movementDistance;
-
-    if (movingRight_)
-        horizontalDirection += movementDistance;
 
     if (jumping_) {
         const float jumpDirection = movementDistance * 2.0f + gravityDirection.y;
@@ -120,9 +92,5 @@ MoveableType Player::getType() {
 std::string Player::toString() {
     return Moveable::toString() +
            "jumpHeight = " + std::to_string(jumpHeight_) + "\n" +
-           "jumping = " + std::to_string(jumping_) + "\n" +
-           "movingUp = " + std::to_string(movingUp_) + "\n" +
-           "movingDown = " + std::to_string(movingDown_) + "\n" +
-           "movingLeft = " + std::to_string(movingLeft_) + "\n" +
-           "movingRight = " + std::to_string(movingRight_) + "\n";
+           "jumping = " + std::to_string(jumping_) + "\n";
 }

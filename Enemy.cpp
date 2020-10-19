@@ -1,18 +1,12 @@
 #include "Enemy.h"
 
-Enemy::Enemy(SoundManager& soundManager) : Moveable(soundManager) {
-    hitBox_ = sf::RectangleShape();
+Enemy::Enemy(SoundManager& soundManager) : Moveable(soundManager), hitBox_(), movingLeft_(false) {}
 
-    movingLeft_ = false;
-}
-
-Enemy::Enemy(const Vector2f& position, const float playerSizeX, const float playerSizeY, const sf::Color enemyColor, SoundManager& soundManager) : Moveable(soundManager) {
+Enemy::Enemy(const Vector2f& position, const sf::Vector2f& size, const sf::Color enemyColor, SoundManager& soundManager)
+    : Moveable(soundManager), hitBox_(), movingLeft_(false) {
     setFillColor(enemyColor);
-    hitBox_ = sf::RectangleShape();
-    Enemy::setSize(Vector2f(playerSizeX, playerSizeY));
+    Enemy::setSize(size);
     Enemy::setPosition(position);
-
-    movingLeft_ = false;
 }
 
 void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& world) {

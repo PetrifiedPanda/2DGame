@@ -53,9 +53,7 @@ float groundWidth = 40.0f * scaleFactorY;
 
 float platformWidth = 10.0f * scaleFactorY;
 
-float playerSizeX = 10.0f * scaleFactorX;
-
-float playerSizeY = 10.0f * scaleFactorY;
+sf::Vector2f playerSize(10.0f * scaleFactorX, 10.0f * scaleFactorY);
 
 int main() {
     World world(movementSpeed, gravity);
@@ -80,7 +78,7 @@ int main() {
 
     soundManager.playSoundTrack();
 
-    world.addPlayer(std::make_unique<GrowingPlayer>(Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scaleFactorY), playerSizeX, playerSizeY, Colors().playerColor, soundManager));
+    world.addPlayer(std::make_unique<GrowingPlayer>(Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scaleFactorY), playerSize, Colors().playerColor, soundManager));
     View view(window, dynamic_cast<Player*>(world.getPlayer()), movementSpeed * 2.0f);
 
     // Add floor and a few platforms
@@ -214,10 +212,10 @@ void addPillar(World& world, const Vector2f& position, const float width, const 
 void spawnEnemy(World& world, const Vector2f& position, SoundManager& soundManager) {
     const Colors colors;
 
-    Enemy enemy(position, playerSizeX, playerSizeY, colors.enemyColor, soundManager);
+    Enemy enemy(position, playerSize, colors.enemyColor, soundManager);
 
     if (world.canMoveInDirection(&enemy, Vector2f(0, 0)))
-        world.addMoveable(std::make_unique<Enemy>(position, playerSizeX, playerSizeY, colors.enemyColor, soundManager));
+        world.addMoveable(std::make_unique<Enemy>(position, playerSize, colors.enemyColor, soundManager));
 }
 
 void handleWindowResize(sf::Event& event) {
@@ -235,8 +233,7 @@ void handleWindowResize(sf::Event& event) {
     movementSpeed = 100.0f * scaleFactorX;
     gravity = 200.0f * scaleFactorY;
     groundWidth = 10.0f * scaleFactorY;
-    playerSizeX = 10.0f * scaleFactorX;
-    playerSizeY = 10.0f * scaleFactorY;
+    playerSize = Vector2f(10.0f * scaleFactorX, 10.0f * scaleFactorY);
 
     /*
 	TODO:

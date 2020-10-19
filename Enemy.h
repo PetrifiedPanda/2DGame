@@ -12,7 +12,7 @@ class Enemy : public Moveable {
 
    public:
     explicit Enemy(SoundManager& soundManager);
-    Enemy(const Vector2f& position, float playerSizeX, float playerSizeY, sf::Color enemyColor, SoundManager& soundManager);
+    Enemy(const Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, SoundManager& soundManager);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 
