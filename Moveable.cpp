@@ -1,8 +1,8 @@
 #include "Moveable.h"
 
-Moveable::Moveable(SoundManager& soundManager) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {}
+Moveable::Moveable() : rectangle_(), id_(idNullValue) {}
 
-Moveable::Moveable(SoundManager& soundManager, const sf::Vector2f& position, const sf::Vector2f& size) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {
+Moveable::Moveable(const sf::Vector2f& position, const sf::Vector2f& size) : rectangle_(), id_(idNullValue) {
     setPosition(position);
     setSize(size);
 }
@@ -59,9 +59,12 @@ void Moveable::addForce(const sf::Vector2f& force) {
 }
 
 void Moveable::die(World& world) {
-    soundManager_.removeEntity(id_);
+    world.soundManager.removeEntity(id_);
+    this->onDeath(world);
     world.killMoveable(this);
 }
+
+void Moveable::onDeath(World& world) {}
 
 sf::RectangleShape Moveable::getRectangle() const {
     return rectangle_;
@@ -73,6 +76,10 @@ sf::Vector2f Moveable::getSize() const {
 
 sf::Vector2f Moveable::getPosition() const {
     return rectangle_.getPosition();
+}
+
+sf::Color Moveable::getFillColor() const {
+    return rectangle_.getFillColor();
 }
 
 void Moveable::setPosition(const sf::Vector2f& position) {
@@ -107,7 +114,6 @@ void Moveable::setID(int newID) {
         throw std::runtime_error("ID may not be changed");
 
     id_ = newID;
-    soundManager_.addEntitySound(id_);
 }
 
 std::string Moveable::toString() {

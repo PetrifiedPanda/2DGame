@@ -18,11 +18,9 @@ class Moveable {
 
     sf::Vector2f force_;
 
-    SoundManager& soundManager_;
-
    public:
-    explicit Moveable(SoundManager& soundManager);
-    explicit Moveable(SoundManager& soundManager, const sf::Vector2f& position, const sf::Vector2f& size);
+    explicit Moveable();
+    explicit Moveable(const sf::Vector2f& position, const sf::Vector2f& size);
     virtual ~Moveable();
 
     virtual void update(float elapsedTime, sf::RenderWindow& window, World& world) = 0;
@@ -30,11 +28,14 @@ class Moveable {
 
     void addForce(const sf::Vector2f& force);
 
-    virtual void die(World& world);
+    void die(World& world);
+    virtual void onDeath(World& worlds);
 
     sf::RectangleShape getRectangle() const;
     sf::Vector2f getSize() const;
     sf::Vector2f getPosition() const;
+
+    sf::Color getFillColor() const;
 
     virtual void setPosition(const sf::Vector2f& position);
     void setTexture(sf::Texture* texture);
