@@ -16,27 +16,27 @@ class Moveable {
    protected:
     sf::RectangleShape rectangle_;
 
-    Vector2f force_;
+    sf::Vector2f force_;
 
     SoundManager& soundManager_;
 
    public:
     explicit Moveable(SoundManager& soundManager);
-    explicit Moveable(SoundManager& soundManager, const Vector2f& position, const Vector2f& size);
+    explicit Moveable(SoundManager& soundManager, const sf::Vector2f& position, const sf::Vector2f& size);
     virtual ~Moveable();
 
     virtual void update(float elapsedTime, sf::RenderWindow& window, World& world) = 0;
     void gravityUpdate(float elapsedTime, sf::RenderWindow& window, World& world);
 
-    void addForce(const Vector2f& force);
+    void addForce(const sf::Vector2f& force);
 
     virtual void die(World& world);
 
     sf::RectangleShape getRectangle() const;
-    Vector2f getSize() const;
-    Vector2f getPosition() const;
+    sf::Vector2f getSize() const;
+    sf::Vector2f getPosition() const;
 
-    virtual void setPosition(const Vector2f& position);
+    virtual void setPosition(const sf::Vector2f& position);
     void setTexture(sf::Texture* texture);
 
     virtual MoveableType getType() = 0;
@@ -47,8 +47,8 @@ class Moveable {
     virtual std::string toString();
 
    protected:
-    virtual void move(const Vector2f& direction);
-    virtual void setSize(const Vector2f& size);
+    virtual void move(const sf::Vector2f& direction);
+    virtual void setSize(const sf::Vector2f& size);
 
     void setFillColor(const sf::Color& color);
     void setOutlineColor(const sf::Color& color);

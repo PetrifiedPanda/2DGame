@@ -13,16 +13,14 @@
 
 #define EDITOR
 
-using sf::Vector2f;
-
 void addFloor(World& world);
-void addPlatform(World& world, const Vector2f& position, float length);
-void addPillar(World& world, const Vector2f& position, float width, float height);
-void spawnEnemy(World& world, const Vector2f& position, SoundManager& soundManager);
+void addPlatform(World& world, const sf::Vector2f& position, float length);
+void addPillar(World& world, const sf::Vector2f& position, float width, float height);
+void spawnEnemy(World& world, const sf::Vector2f& position, SoundManager& soundManager);
 
-void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager);
+void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager);
 void handleWindowResize(sf::Event& event);
-void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager);
+void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager);
 void handleKeyboardEvents(sf::Event& event, bool& pause, bool& pauseReleased);
 
 struct Colors {
@@ -78,16 +76,16 @@ int main() {
 
     soundManager.playSoundTrack();
 
-    world.addPlayer(std::make_unique<GrowingPlayer>(Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scaleFactorY), playerSize, Colors().playerColor, soundManager));
+    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scaleFactorY), playerSize, Colors().playerColor, soundManager));
     View view(window, dynamic_cast<Player*>(world.getPlayer()), movementSpeed * 2.0f);
 
     // Add floor and a few platforms
-    addPillar(world, Vector2f(60, referenceHeight - 50), 20, 50);
+    addPillar(world, sf::Vector2f(60, referenceHeight - 50), 20, 50);
 
     int x = 500;
     int y = static_cast<int>(referenceHeight) - 50;
     while (static_cast<float>(x) < referenceWidth && y > 0) {
-        addPlatform(world, Vector2f(x, y), 100);
+        addPlatform(world, sf::Vector2f(x, y), 100);
         x += 100;
         y -= 50;
     }
@@ -101,7 +99,7 @@ int main() {
 
     auto fpsTime = std::chrono::system_clock::now();
 
-    Vector2f mouseOffset;
+    sf::Vector2f mouseOffset;
     Moveable* selectedMoveable = nullptr;
     Moveable* draggedMoveable = nullptr;
 
@@ -127,7 +125,7 @@ int main() {
             selectedMoveable = nullptr;
 
         if (draggedMoveable != nullptr)
-            draggedMoveable->setPosition(view.getPositionInGame(static_cast<Vector2f>(sf::Mouse::getPosition(window)) + mouseOffset));
+            draggedMoveable->setPosition(view.getPositionInGame(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) + mouseOffset));
 #endif
 
         if (frames == updateFrames) {
@@ -181,40 +179,40 @@ void addFloor(World& world) {
     sf::RectangleShape floor;
 
     floor.setFillColor(colors.environmentColor);
-    floor.setSize(Vector2f(windowWidth * 2, groundWidth));
-    floor.setPosition(Vector2f(-windowWidth, windowHeight));
+    floor.setSize(sf::Vector2f(windowWidth * 2, groundWidth));
+    floor.setPosition(sf::Vector2f(-windowWidth, windowHeight));
 
     world.addRectangle(floor);
 }
 
-void addPlatform(World& world, const Vector2f& position, const float length) {
+void addPlatform(World& world, const sf::Vector2f& position, const float length) {
     const Colors colors;
 
     sf::RectangleShape platform;
     platform.setFillColor(colors.environmentColor);
-    platform.setSize(Vector2f(length * scaleFactorX, platformWidth));
-    platform.setPosition(Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
+    platform.setSize(sf::Vector2f(length * scaleFactorX, platformWidth));
+    platform.setPosition(sf::Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
 
     world.addRectangle(platform);
 }
 
-void addPillar(World& world, const Vector2f& position, const float width, const float height) {
+void addPillar(World& world, const sf::Vector2f& position, const float width, const float height) {
     const Colors colors;
 
     sf::RectangleShape pillar;
     pillar.setFillColor(colors.environmentColor);
-    pillar.setSize(Vector2f(width * scaleFactorX, height * scaleFactorY));
-    pillar.setPosition(Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
+    pillar.setSize(sf::Vector2f(width * scaleFactorX, height * scaleFactorY));
+    pillar.setPosition(sf::Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
 
     world.addRectangle(pillar);
 }
 
-void spawnEnemy(World& world, const Vector2f& position, SoundManager& soundManager) {
+void spawnEnemy(World& world, const sf::Vector2f& position, SoundManager& soundManager) {
     const Colors colors;
 
     Enemy enemy(position, playerSize, colors.enemyColor, soundManager);
 
-    if (world.canMoveInDirection(&enemy, Vector2f(0, 0)))
+    if (world.canMoveInDirection(&enemy, sf::Vector2f(0, 0)))
         world.addMoveable(std::make_unique<Enemy>(position, playerSize, colors.enemyColor, soundManager));
 }
 
@@ -233,7 +231,7 @@ void handleWindowResize(sf::Event& event) {
     movementSpeed = 100.0f * scaleFactorX;
     gravity = 200.0f * scaleFactorY;
     groundWidth = 10.0f * scaleFactorY;
-    playerSize = Vector2f(10.0f * scaleFactorX, 10.0f * scaleFactorY);
+    playerSize = sf::Vector2f(10.0f * scaleFactorX, 10.0f * scaleFactorY);
 
     /*
 	TODO:
@@ -241,7 +239,7 @@ void handleWindowResize(sf::Event& event) {
 	*/
 }
 
-void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager) {
+void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager) {
     sf::Event event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
@@ -258,8 +256,8 @@ void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, boo
 }
 
 #ifdef EDITOR
-void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager) {
-    const Vector2f mousePosition = view.getPositionInGame(static_cast<Vector2f>(sf::Mouse::getPosition(window)));
+void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable, SoundManager& soundManager) {
+    const sf::Vector2f mousePosition = view.getPositionInGame(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
 
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.key.code == sf::Mouse::Left) {

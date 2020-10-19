@@ -2,7 +2,7 @@
 
 Moveable::Moveable(SoundManager& soundManager) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {}
 
-Moveable::Moveable(SoundManager& soundManager, const Vector2f& position, const Vector2f& size) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {
+Moveable::Moveable(SoundManager& soundManager, const sf::Vector2f& position, const sf::Vector2f& size) : rectangle_(), soundManager_(soundManager), id_(idNullValue) {
     setPosition(position);
     setSize(size);
 }
@@ -10,14 +10,14 @@ Moveable::Moveable(SoundManager& soundManager, const Vector2f& position, const V
 Moveable::~Moveable() = default;
 
 void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World& world) {
-    const Vector2f gravityDirection(0, elapsedTime * world.getGravity());
+    const sf::Vector2f gravityDirection(0, elapsedTime * world.getGravity());
     if (world.canMoveInDirection(this, gravityDirection))
         move(gravityDirection);
 
     float movementDistance = elapsedTime * world.getMovementSpeed();
 
     if (force_.x > 0.0f) {
-        const Vector2f rightMovement(force_.x < movementDistance ? force_.x : movementDistance, 0.0f);
+        const sf::Vector2f rightMovement(force_.x < movementDistance ? force_.x : movementDistance, 0.0f);
 
         if (world.canMoveInDirection(this, rightMovement)) {
             move(rightMovement);
@@ -25,7 +25,7 @@ void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World&
         } else
             force_.x = 0.0f;
     } else if (force_.x < 0.0f) {
-        const Vector2f leftMovement(force_.x > -movementDistance ? force_.x : -movementDistance, 0.0f);
+        const sf::Vector2f leftMovement(force_.x > -movementDistance ? force_.x : -movementDistance, 0.0f);
 
         if (world.canMoveInDirection(this, leftMovement)) {
             move(leftMovement);
@@ -35,7 +35,7 @@ void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World&
     }
 
     if (force_.y > 0.0f) {
-        const Vector2f downMovement(0.0f, force_.y < movementDistance ? force_.y : movementDistance);
+        const sf::Vector2f downMovement(0.0f, force_.y < movementDistance ? force_.y : movementDistance);
 
         if (world.canMoveInDirection(this, downMovement)) {
             move(downMovement);
@@ -43,7 +43,7 @@ void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World&
         } else
             force_.y = 0.0f;
     } else if (force_.y < 0.0f) {
-        Vector2f upMovement = Vector2f(0.0f, force_.y > -movementDistance ? force_.y : -movementDistance);
+        sf::Vector2f upMovement = sf::Vector2f(0.0f, force_.y > -movementDistance ? force_.y : -movementDistance);
         upMovement.y = upMovement.y * 2.0f - gravityDirection.y;
 
         if (world.canMoveInDirection(this, upMovement)) {
@@ -54,7 +54,7 @@ void Moveable::gravityUpdate(float elapsedTime, sf::RenderWindow& window, World&
     }
 }
 
-void Moveable::addForce(const Vector2f& force) {
+void Moveable::addForce(const sf::Vector2f& force) {
     force_ += force;
 }
 
@@ -67,15 +67,15 @@ sf::RectangleShape Moveable::getRectangle() const {
     return rectangle_;
 }
 
-Vector2f Moveable::getSize() const {
+sf::Vector2f Moveable::getSize() const {
     return rectangle_.getSize();
 }
 
-Vector2f Moveable::getPosition() const {
+sf::Vector2f Moveable::getPosition() const {
     return rectangle_.getPosition();
 }
 
-void Moveable::setPosition(const Vector2f& position) {
+void Moveable::setPosition(const sf::Vector2f& position) {
     rectangle_.setPosition(position);
 }
 
@@ -118,11 +118,11 @@ std::string Moveable::toString() {
            "force = x: " + std::to_string(force_.x) + " y: " + std::to_string(force_.y) + "\n";
 }
 
-void Moveable::move(const Vector2f& direction) {
+void Moveable::move(const sf::Vector2f& direction) {
     rectangle_.move(direction);
 }
 
-void Moveable::setSize(const Vector2f& size) {
+void Moveable::setSize(const sf::Vector2f& size) {
     rectangle_.setSize(size);
 }
 

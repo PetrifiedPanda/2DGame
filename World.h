@@ -9,8 +9,6 @@
 
 #include "Global.h"
 
-using sf::Vector2f;
-
 class Moveable;
 
 class World {
@@ -45,11 +43,11 @@ class World {
     float getGravity() const;
     float getMovementSpeed() const;
 
-    Vector2f getMaxMovement(Moveable* moveable, const Vector2f& direction);
-    Vector2f getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const Vector2f& direction);
+    sf::Vector2f getMaxMovement(Moveable* moveable, const sf::Vector2f& direction);
+    sf::Vector2f getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const sf::Vector2f& direction);
 
-    bool canMoveInDirection(Moveable* moveable, const Vector2f& direction);
-    static bool doRectanglesOverlap(const sf::RectangleShape& rect, const Vector2f& size, const std::array<Vector2f, 4>& corners);
+    bool canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction);
+    static bool doRectanglesOverlap(const sf::RectangleShape& rect, const sf::Vector2f& size, const std::array<sf::Vector2f, 4>& corners);
     static bool doRectanglesOverlap(const sf::RectangleShape& rect, const sf::RectangleShape& otherRect);
 
     void update(float elapsedTime, sf::RenderWindow& window, Moveable* draggedMoveable);
@@ -58,14 +56,14 @@ class World {
 
     Moveable* getPlayer() const;
 
-    Moveable* isOnMoveable(const Vector2f& position);
+    Moveable* isOnMoveable(const sf::Vector2f& position);
     bool containsMoveable(Moveable* moveable);
 
    private:
     void deleteMoveable(Moveable* moveable);
 
-    static bool cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<Vector2f, 4>& corners);
-    static std::array<Vector2f, 4> findCorners(const Vector2f& position, const Vector2f& size);
+    static bool cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<sf::Vector2f, 4>& corners);
+    static std::array<sf::Vector2f, 4> findCorners(const sf::Vector2f& position, const sf::Vector2f& size);
 };
 
 #include "Moveable.h"

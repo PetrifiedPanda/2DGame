@@ -2,7 +2,7 @@
 
 Player::Player(SoundManager& soundManager) : Moveable(soundManager), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {}
 
-Player::Player(const Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor, SoundManager& soundManager)
+Player::Player(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color playerColor, SoundManager& soundManager)
     : Moveable(soundManager, position, size), jumping_(false), jumpHeight_(0.0f), maxJumpHeight_(getSize().y * 7) {
     setFillColor(playerColor);
     setOutlineColor(sf::Color::Green);
@@ -10,7 +10,7 @@ Player::Player(const Vector2f& position, const sf::Vector2f& size, const sf::Col
 }
 
 void Player::update(const float elapsedTime, sf::RenderWindow& window, World& world) {
-    const Vector2f gravityDirection(0, world.getGravity() * elapsedTime);
+    const sf::Vector2f gravityDirection(0, world.getGravity() * elapsedTime);
     bool onGround;
 
     if (world.canMoveInDirection(this, gravityDirection))
@@ -64,7 +64,7 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
 
     // Check vertical and Horizontal direction separately
 
-    const Vector2f verticalDirectionVector(0, verticalDirection);
+    const sf::Vector2f verticalDirectionVector(0, verticalDirection);
 
     if (world.canMoveInDirection(this, verticalDirectionVector)) {
         move(verticalDirectionVector);
@@ -74,7 +74,7 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
         jumpHeight_ = 0;
     }
 
-    const Vector2f horizontalDirectionVector(horizontalDirection, 0);
+    const sf::Vector2f horizontalDirectionVector(horizontalDirection, 0);
 
     if (world.canMoveInDirection(this, horizontalDirectionVector))
         move(horizontalDirectionVector);

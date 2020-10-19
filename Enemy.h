@@ -12,7 +12,7 @@ class Enemy : public Moveable {
 
    public:
     explicit Enemy(SoundManager& soundManager);
-    Enemy(const Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, SoundManager& soundManager);
+    Enemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, SoundManager& soundManager);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 
@@ -20,11 +20,11 @@ class Enemy : public Moveable {
 
     std::string toString() override;
 
-    void setPosition(const Vector2f& position) override;
+    void setPosition(const sf::Vector2f& position) override;
 
    protected:
-    void move(const Vector2f& direction) override;
-    void setSize(const Vector2f& size) override;
+    void move(const sf::Vector2f& direction) override;
+    void setSize(const sf::Vector2f& size) override;
     void repositionHitBox();
 
     bool isAttacked(Moveable* player) const;

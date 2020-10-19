@@ -59,8 +59,8 @@ float World::getMovementSpeed() const {
 }
 
 // This is parts of an attempt to make alternative collision checks
-Vector2f World::getMaxMovement(Moveable* moveable, const Vector2f& direction) {
-    const Vector2f size = moveable->getSize();
+sf::Vector2f World::getMaxMovement(Moveable* moveable, const sf::Vector2f& direction) {
+    const sf::Vector2f size = moveable->getSize();
     const sf::RectangleShape rect = moveable->getRectangle();
 
     float xDir = direction.x;
@@ -68,7 +68,7 @@ Vector2f World::getMaxMovement(Moveable* moveable, const Vector2f& direction) {
 
     const int staticRectSize = staticRectangles_.size();
 
-    Vector2f tmp = direction;
+    sf::Vector2f tmp = direction;
 
 #pragma omp parallel for private(xDir, yDir)
     for (int i = 0; i < staticRectSize; ++i) {
@@ -101,14 +101,14 @@ Vector2f World::getMaxMovement(Moveable* moveable, const Vector2f& direction) {
     return tmp;
 }
 
-Vector2f World::getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const Vector2f& direction) {
-    const Vector2f pos1 = rect1.getPosition();
-    const Vector2f sizePos1 = pos1 + rect1.getSize();
+sf::Vector2f World::getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const sf::Vector2f& direction) {
+    const sf::Vector2f pos1 = rect1.getPosition();
+    const sf::Vector2f sizePos1 = pos1 + rect1.getSize();
 
-    const Vector2f pos2 = rect2.getPosition();
-    const Vector2f sizePos2 = pos2 + rect2.getSize();
+    const sf::Vector2f pos2 = rect2.getPosition();
+    const sf::Vector2f sizePos2 = pos2 + rect2.getSize();
 
-    Vector2f result;
+    sf::Vector2f result;
 
     if (sizePos1.x < pos2.x)
         result.x = pos2.x - sizePos1.x;
@@ -135,11 +135,11 @@ Vector2f World::getDistanceUntilCollision(const sf::RectangleShape& rect1, const
     return result;
 }
 
-bool World::canMoveInDirection(Moveable* moveable, const Vector2f& direction) {
-    const Vector2f newPosition = moveable->getPosition() + direction;
-    const Vector2f size = moveable->getSize();
+bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction) {
+    const sf::Vector2f newPosition = moveable->getPosition() + direction;
+    const sf::Vector2f size = moveable->getSize();
 
-    const std::array<Vector2f, 4> corners = findCorners(newPosition, size);
+    const std::array<sf::Vector2f, 4> corners = findCorners(newPosition, size);
 
     // Check collision with staticRectangles
     const int staticRectSize = staticRectangles_.size();
@@ -175,8 +175,8 @@ bool World::canMoveInDirection(Moveable* moveable, const Vector2f& direction) {
         return true;
 }
 
-bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const Vector2f& size, const std::array<Vector2f, 4>& corners) {
-    const Vector2f rectSize = rect.getSize();
+bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const sf::Vector2f& size, const std::array<sf::Vector2f, 4>& corners) {
+    const sf::Vector2f rectSize = rect.getSize();
 
     // if rect is larger than the other rectangle, check if corners of the rectangle are inside the other
     if (rectSize.x > size.x || rectSize.y > size.y) {
@@ -185,14 +185,14 @@ bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const Vector2f& 
     }
 
     // Check if any of the corners of rect are inside the other Rectangle
-    const std::array<Vector2f, 4> rectCorners = findCorners(rect.getPosition(), rectSize);
+    const std::array<sf::Vector2f, 4> rectCorners = findCorners(rect.getPosition(), rectSize);
 
-    const Vector2f position = corners[0];
+    const sf::Vector2f position = corners[0];
 
     const float rightX = corners[3].x;
     const float downY = corners[3].y;
 
-    for (const Vector2f& corner : rectCorners) {
+    for (const sf::Vector2f& corner : rectCorners) {
         if (position.x <= corner.x && rightX >= corner.x &&
             position.y <= corner.y && downY >= corner.y)
             return true;
@@ -202,17 +202,17 @@ bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const Vector2f& 
 }
 
 bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const sf::RectangleShape& otherRect) {
-    const Vector2f rectSize = rect.getSize();
-    const Vector2f otherRectSize = otherRect.getSize();
+    const sf::Vector2f rectSize = rect.getSize();
+    const sf::Vector2f otherRectSize = otherRect.getSize();
 
     if (rectSize.x > otherRectSize.x || rectSize.y > otherRectSize.y) {
-        const std::array<Vector2f, 4> otherRectCorners = findCorners(otherRect.getPosition(), otherRectSize);
+        const std::array<sf::Vector2f, 4> otherRectCorners = findCorners(otherRect.getPosition(), otherRectSize);
 
         if (cornersInsideRectangle(rect, otherRectCorners))
             return true;
     }
 
-    const std::array<Vector2f, 4> rectCorners = findCorners(rect.getPosition(), rectSize);
+    const std::array<sf::Vector2f, 4> rectCorners = findCorners(rect.getPosition(), rectSize);
 
     if (cornersInsideRectangle(otherRect, rectCorners))
         return true;
@@ -220,14 +220,14 @@ bool World::doRectanglesOverlap(const sf::RectangleShape& rect, const sf::Rectan
         return false;
 }
 
-bool World::cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<Vector2f, 4>& corners) {
-    const Vector2f rectPosition = rect.getPosition();
-    const Vector2f rectSize = rect.getSize();
+bool World::cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<sf::Vector2f, 4>& corners) {
+    const sf::Vector2f rectPosition = rect.getPosition();
+    const sf::Vector2f rectSize = rect.getSize();
 
     const float rightX = rectPosition.x + rectSize.x;
     const float downY = rectPosition.y + rectSize.y;
 
-    for (const Vector2f& corner : corners) {
+    for (const sf::Vector2f& corner : corners) {
         if (rectPosition.x <= corner.x && rightX >= corner.x &&
             rectPosition.y <= corner.y && downY >= corner.y)
             return true;
@@ -236,16 +236,16 @@ bool World::cornersInsideRectangle(const sf::RectangleShape& rect, const std::ar
     return false;
 }
 
-std::array<Vector2f, 4> World::findCorners(const Vector2f& position, const Vector2f& size) {
-    std::array<Vector2f, 4> corners;
+std::array<sf::Vector2f, 4> World::findCorners(const sf::Vector2f& position, const sf::Vector2f& size) {
+    std::array<sf::Vector2f, 4> corners;
 
     const float rightX = position.x + size.x;
     const float downY = position.y + size.y;
 
     corners[0] = position;
-    corners[1] = Vector2f(rightX, position.y);
-    corners[2] = Vector2f(position.x, downY);
-    corners[3] = Vector2f(rightX, downY);
+    corners[1] = sf::Vector2f(rightX, position.y);
+    corners[2] = sf::Vector2f(position.x, downY);
+    corners[3] = sf::Vector2f(rightX, downY);
 
     return corners;
 }
@@ -278,10 +278,10 @@ void World::update(const float elapsedTime, sf::RenderWindow& window, Moveable* 
     }
 }
 
-Moveable* World::isOnMoveable(const Vector2f& position) {
+Moveable* World::isOnMoveable(const sf::Vector2f& position) {
     for (auto& moveable : moveables_) {
-        const Vector2f upperLeft = moveable->getPosition();
-        const Vector2f lowerRight = upperLeft + moveable->getSize();
+        const sf::Vector2f upperLeft = moveable->getPosition();
+        const sf::Vector2f lowerRight = upperLeft + moveable->getSize();
 
         if (position.x >= upperLeft.x && position.x <= lowerRight.x && position.y >= upperLeft.y && position.y <= lowerRight.y)
             return moveable.get();

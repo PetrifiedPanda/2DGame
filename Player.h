@@ -13,7 +13,7 @@ class Player : public Moveable {
 
    public:
     explicit Player(SoundManager& soundManager);
-    Player(const Vector2f& position, const sf::Vector2f& size, sf::Color playerColor, SoundManager& soundManager);
+    Player(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color playerColor, SoundManager& soundManager);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 
