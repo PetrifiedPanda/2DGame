@@ -12,7 +12,7 @@ void SplitterEnemy::onDeath(World& world) {
     const sf::Vector2f enemySize(getSize().x / 2.0f, getSize().y / 2.0f);
     const sf::Vector2f zeroVec(0, 0);
 
-    if (generationNum_ == s_numChildSpawns - 1) {  // This generation will be the last that spawns other
+    if (generationNum_ == s_numChildSpawns - 1) {  // This generation will be the last that spawns other Enemies
         Enemy enemy1(enemy1Pos, enemySize, getFillColor());
 
         if (world.canMoveInDirection(&enemy1, zeroVec))
