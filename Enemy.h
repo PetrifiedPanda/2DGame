@@ -16,9 +16,9 @@ class Enemy : public Moveable {
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 
-    MoveableType getType() override;
+    MoveableType getType() const override;
 
-    std::string toString() override;
+    std::string toString() const override;
 
     void setPosition(const sf::Vector2f& position) override;
 

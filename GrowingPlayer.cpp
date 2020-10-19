@@ -49,11 +49,11 @@ void GrowingPlayer::onEnemyKill() {
     }
 }
 
-MoveableType GrowingPlayer::getType() {
+MoveableType GrowingPlayer::getType() const {
     return MoveableType::GROWINGPLAYER;
 }
 
-std::string GrowingPlayer::toString() {
+std::string GrowingPlayer::toString() const {
     return Player::toString() +
            "isGrowing = " + std::to_string(isGrowing_) + "\n" +
            "growthTarget = x: " + std::to_string(growthTarget_.x) + " y: " + std::to_string(growthTarget_.y) + "\n";

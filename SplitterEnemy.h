@@ -11,4 +11,8 @@ class SplitterEnemy : public Enemy {
     SplitterEnemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, int generationNum = 0);
 
     void onDeath(World& world) override;
+
+    MoveableType getType() const override;
+
+    std::string toString() const override;
 };

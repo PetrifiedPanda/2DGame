@@ -16,7 +16,7 @@ class GrowingPlayer : public Player {
 
     void onEnemyKill() override;
 
-    MoveableType getType() override;
+    MoveableType getType() const override;
 
-    std::string toString() override;
+    std::string toString() const override;
 };

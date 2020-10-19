@@ -33,11 +33,11 @@ void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& wor
     }
 }
 
-MoveableType Enemy::getType() {
+MoveableType Enemy::getType() const {
     return MoveableType::ENEMY;
 }
 
-std::string Enemy::toString() {
+std::string Enemy::toString() const {
     return Moveable::toString() +
            "movingLeft = " + std::to_string(movingLeft_) + "\n";
 }

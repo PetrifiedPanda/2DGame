@@ -33,3 +33,12 @@ void SplitterEnemy::onDeath(World& world) {
             world.addMoveable(std::make_unique<SplitterEnemy>(enemy2Pos, enemySize, getFillColor(), nextGenNum));
     }
 }
+
+MoveableType SplitterEnemy::getType() const {
+    return MoveableType::SPLITTERENEMY;
+}
+
+std::string SplitterEnemy::toString() const {
+    return Enemy::toString() +
+           "generationNum = " + std::to_string(generationNum_);
+}

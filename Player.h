@@ -19,7 +19,7 @@ class Player : public Moveable {
 
     virtual void onEnemyKill();
 
-    MoveableType getType() override;
+    MoveableType getType() const override;
 
-    std::string toString() override;
+    std::string toString() const override;
 };

@@ -6,7 +6,8 @@
 enum class MoveableType {
     PLAYER,
     GROWINGPLAYER,
-    ENEMY
+    ENEMY,
+    SPLITTERENEMY
 };
 
 class Moveable {
@@ -40,12 +41,12 @@ class Moveable {
     virtual void setPosition(const sf::Vector2f& position);
     void setTexture(sf::Texture* texture);
 
-    virtual MoveableType getType() = 0;
-    std::string getTypeString();
+    virtual MoveableType getType() const = 0;
+    std::string getTypeString() const;
     int getID() const;
     void setID(int newID);
 
-    virtual std::string toString();
+    virtual std::string toString() const;
 
    protected:
     virtual void move(const sf::Vector2f& direction);

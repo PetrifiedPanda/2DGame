@@ -90,7 +90,7 @@ void Moveable::setTexture(sf::Texture* texture) {
     rectangle_.setTexture(texture, true);
 }
 
-std::string Moveable::getTypeString() {
+std::string Moveable::getTypeString() const {
     const MoveableType type = getType();
 
     switch (type) {
@@ -100,6 +100,8 @@ std::string Moveable::getTypeString() {
             return "GrowingPlayer";
         case MoveableType::ENEMY:
             return "Enemy";
+        case MoveableType::SPLITTERENEMY:
+            return "SplitterEnemy";
         default:
             return "Moveable";
     }
@@ -116,7 +118,7 @@ void Moveable::setID(int newID) {
     id_ = newID;
 }
 
-std::string Moveable::toString() {
+std::string Moveable::toString() const {
     return "ID = " + std::to_string(getID()) + "\n" +
            "Type = " + getTypeString() + "\n" +
            "Position = x: " + std::to_string(getPosition().x) + " y: " + std::to_string(getPosition().y) + "\n" +

@@ -85,11 +85,11 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
 void Player::onEnemyKill() {
 }
 
-MoveableType Player::getType() {
+MoveableType Player::getType() const {
     return MoveableType::PLAYER;
 }
 
-std::string Player::toString() {
+std::string Player::toString() const {
     return Moveable::toString() +
            "jumpHeight = " + std::to_string(jumpHeight_) + "\n" +
            "jumping = " + std::to_string(jumping_) + "\n";
