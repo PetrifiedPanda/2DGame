@@ -10,7 +10,7 @@ class GrowingPlayer : public Player {
 
    public:
     explicit GrowingPlayer(SoundManager& soundManager);
-    GrowingPlayer(Vector2f position, float playerSizeX, float playerSizeY, sf::Color playerColor, SoundManager& soundManager);
+    GrowingPlayer(const Vector2f& position, float playerSizeX, float playerSizeY, sf::Color playerColor, SoundManager& soundManager);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 

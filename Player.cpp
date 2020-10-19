@@ -108,8 +108,6 @@ void Player::update(const float elapsedTime, sf::RenderWindow& window, World& wo
         move(horizontalDirectionVector);
     else
         soundManager_.playCollisionSound(getID());
-
-    Moveable::update(elapsedTime, window, world);
 }
 
 void Player::onEnemyKill() {

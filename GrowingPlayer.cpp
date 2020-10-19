@@ -5,7 +5,7 @@ GrowingPlayer::GrowingPlayer(SoundManager& soundManager) : Player(soundManager) 
     growthTarget_ = Vector2f(0, 0);
 }
 
-GrowingPlayer::GrowingPlayer(const Vector2f position, const float playerSizeX, const float playerSizeY, const sf::Color playerColor, SoundManager& soundManager)
+GrowingPlayer::GrowingPlayer(const Vector2f& position, const float playerSizeX, const float playerSizeY, const sf::Color playerColor, SoundManager& soundManager)
     : Player(position, playerSizeX, playerSizeY, playerColor, soundManager) {
     isGrowing_ = false;
     growthTarget_ = Vector2f(0, 0);

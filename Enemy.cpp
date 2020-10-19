@@ -6,7 +6,7 @@ Enemy::Enemy(SoundManager& soundManager) : Moveable(soundManager) {
     movingLeft_ = false;
 }
 
-Enemy::Enemy(const Vector2f position, const float playerSizeX, const float playerSizeY, const sf::Color enemyColor, SoundManager& soundManager) : Moveable(soundManager) {
+Enemy::Enemy(const Vector2f& position, const float playerSizeX, const float playerSizeY, const sf::Color enemyColor, SoundManager& soundManager) : Moveable(soundManager) {
     setFillColor(enemyColor);
     hitBox_ = sf::RectangleShape();
     Enemy::setSize(Vector2f(playerSizeX, playerSizeY));
@@ -37,8 +37,6 @@ void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& wor
         movingLeft_ = !movingLeft_;
         soundManager_.playCollisionSound(getID());
     }
-
-    Moveable::update(elapsedTime, window, world);
 }
 
 MoveableType Enemy::getType() {
