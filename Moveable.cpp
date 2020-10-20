@@ -66,7 +66,7 @@ void Moveable::die(World& world) {
 
 void Moveable::onDeath(World& world) {}
 
-sf::RectangleShape Moveable::getRectangle() const {
+const sf::RectangleShape& Moveable::getRectangle() const {
     return rectangle_;
 }
 

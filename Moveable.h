@@ -32,7 +32,7 @@ class Moveable {
     void die(World& world);
     virtual void onDeath(World& worlds);
 
-    sf::RectangleShape getRectangle() const;
+    const sf::RectangleShape& getRectangle() const;
     sf::Vector2f getSize() const;
     sf::Vector2f getPosition() const;
 

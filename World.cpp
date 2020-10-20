@@ -53,7 +53,7 @@ float World::getMovementSpeed() const {
 // This is parts of an attempt to make alternative collision checks
 sf::Vector2f World::getMaxMovement(Moveable* moveable, const sf::Vector2f& direction) {
     const sf::Vector2f size = moveable->getSize();
-    const sf::RectangleShape rect = moveable->getRectangle();
+    const sf::RectangleShape& rect = moveable->getRectangle();
 
     float xDir = direction.x;
     float yDir = direction.y;
@@ -152,7 +152,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
 #pragma omp parallel for reduction(|| \
                                    : foundCollision)
     for (int i = 0; i < moveablesSize; ++i) {
-        sf::RectangleShape rect = moveables_[i]->getRectangle();
+        const sf::RectangleShape& rect = moveables_[i]->getRectangle();
 
         if (moveables_[i].get() == moveable)
             continue;
@@ -259,8 +259,6 @@ void World::update(const float elapsedTime, sf::RenderWindow& window, Moveable* 
         deleteMoveable(moveable);
 
     killNextFrame_.clear();
-
-    const int size = moveables_.size();
 
     for (auto& moveable : moveables_) {
         if (moveable.get() != draggedMoveable) {
