@@ -135,7 +135,7 @@ int main() {
                 "Static Rectangles: " + std::to_string(world.getStaticRectangleCount()) + "\n";
 
             if (selectedMoveable != nullptr)
-                statString = selectedMoveable->toString();  // Throws an error when selected moveable dies
+                statString = selectedMoveable->toString();
 #endif
 
             // Calculate FPS
