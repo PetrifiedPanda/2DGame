@@ -19,7 +19,7 @@ void addPillar(World& world, const sf::Vector2f& position, float width, float he
 void spawnEnemy(World& world, const sf::Vector2f& position);
 
 void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable);
-void handleWindowResize(sf::Event& event);
+void handleWindowResize(sf::Event& event, sf::RenderWindow& window, World& world, View& view);
 void handleMouseEvents(sf::Event& event, World& world, sf::RenderWindow& window, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable);
 void handleKeyboardEvents(sf::Event& event, World& world, bool& pause, bool& pauseReleased);
 
@@ -38,23 +38,18 @@ int windowHeight = 720;
 constexpr float referenceWidth = 1280.0f;
 constexpr float referenceHeight = 720.0f;
 
-float scaleFactorX = static_cast<float>(windowWidth) / referenceWidth;
-float scaleFactorY = static_cast<float>(windowHeight) / referenceHeight;
+sf::Vector2f scale(static_cast<float>(windowWidth) / referenceWidth, static_cast<float>(windowHeight) / referenceHeight);
 
 // World Properties (These should be in relation to window dimensions)
 
-float movementSpeed = 100.0f * scaleFactorX;
+float groundWidth = 40.0f * scale.y;
 
-float gravity = 200.0f * scaleFactorY;
+float platformWidth = 10.0f * scale.y;
 
-float groundWidth = 40.0f * scaleFactorY;
-
-float platformWidth = 10.0f * scaleFactorY;
-
-sf::Vector2f playerSize(10.0f * scaleFactorX, 10.0f * scaleFactorY);
+sf::Vector2f playerSize(10.0f * scale.x, 10.0f * scale.y);
 
 int main() {
-    World world(movementSpeed, gravity);
+    World world(100.0f * scale.x, 200.0f * scale.y);
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "My stupid Game");
 
@@ -74,8 +69,8 @@ int main() {
 
     world.soundManager.playSoundTrack();
 
-    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scaleFactorY), playerSize, Colors().playerColor));
-    View view(window, dynamic_cast<Player*>(world.getPlayer()), movementSpeed * 2.0f);
+    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
+    View view(window, dynamic_cast<Player*>(world.getPlayer()), 200.0f * scale.x);
 
     // Add floor and a few platforms
     addPillar(world, sf::Vector2f(60, referenceHeight - 50), 20, 50);
@@ -188,8 +183,8 @@ void addPlatform(World& world, const sf::Vector2f& position, const float length)
 
     sf::RectangleShape platform;
     platform.setFillColor(colors.environmentColor);
-    platform.setSize(sf::Vector2f(length * scaleFactorX, platformWidth));
-    platform.setPosition(sf::Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
+    platform.setSize(sf::Vector2f(length * scale.x, platformWidth));
+    platform.setPosition(sf::Vector2f(position.x * scale.x, position.y * scale.y));
 
     world.addRectangle(platform);
 }
@@ -199,8 +194,8 @@ void addPillar(World& world, const sf::Vector2f& position, const float width, co
 
     sf::RectangleShape pillar;
     pillar.setFillColor(colors.environmentColor);
-    pillar.setSize(sf::Vector2f(width * scaleFactorX, height * scaleFactorY));
-    pillar.setPosition(sf::Vector2f(position.x * scaleFactorX, position.y * scaleFactorY));
+    pillar.setSize(sf::Vector2f(width * scale.x, height * scale.y));
+    pillar.setPosition(sf::Vector2f(position.x * scale.x, position.y * scale.y));
 
     world.addRectangle(pillar);
 }
@@ -214,27 +209,23 @@ void spawnEnemy(World& world, const sf::Vector2f& position) {
         world.addMoveable(std::make_unique<SplitterEnemy>(position, size, colors.enemyColor));
 }
 
-void handleWindowResize(sf::Event& event) {
+void handleWindowResize(sf::Event& event, sf::RenderWindow& window, World& world, View& view) {
     windowWidth = static_cast<int>(event.size.width);
     windowHeight = static_cast<int>(event.size.height);
 
-    float oldScaleFactorX = scaleFactorX;
-    float oldScaleFactorY = scaleFactorY;
+    sf::Vector2f oldScale(scale);
 
     // Recalculate scale factors
-    scaleFactorX = static_cast<float>(windowWidth) / referenceWidth;
-    scaleFactorY = static_cast<float>(windowHeight) / referenceHeight;
+    scale = sf::Vector2f(static_cast<float>(windowWidth) / referenceWidth, static_cast<float>(windowHeight) / referenceHeight);
 
-    // Reassign world properties
-    movementSpeed = movementSpeed / oldScaleFactorX * scaleFactorX;
-    gravity = gravity / oldScaleFactorY * scaleFactorY;
-    groundWidth = groundWidth / oldScaleFactorY * scaleFactorY;
-    playerSize = sf::Vector2f(playerSize.x / oldScaleFactorX * scaleFactorX, playerSize.y / oldScaleFactorY * scaleFactorY);
+    sf::Vector2f diffScale(scale.x / oldScale.x, scale.y / oldScale.y);  // Scale for entities created with old scale
 
-    /*
-	TODO:
-	Adjust dimensions (and maybe positions) of all RectangleShapes and Moveables in World
-	*/
+    // Reassign global properties
+    groundWidth *= diffScale.y;
+    playerSize = sf::Vector2f(playerSize.x * diffScale.x, playerSize.y * diffScale.y);
+
+    world.scale(diffScale);
+    view.windowResize(window, diffScale);
 }
 
 void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, bool& pauseReleased, View& view, sf::Vector2f& mouseOffset, Moveable*& selectedMoveable, Moveable*& draggedMoveable) {
@@ -244,7 +235,7 @@ void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, boo
             window.close();
 
         if (event.type == sf::Event::Resized)
-            handleWindowResize(event);
+            handleWindowResize(event, window, world, view);
 #ifdef EDITOR
         handleMouseEvents(event, world, window, view, mouseOffset, selectedMoveable, draggedMoveable);
 #endif
