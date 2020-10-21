@@ -49,28 +49,23 @@ float platformWidth = 10.0f * scale.y;
 sf::Vector2f playerSize(10.0f * scale.x, 10.0f * scale.y);
 
 int main() {
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "My stupid Game");
     World world(100.0f * scale.x, 200.0f * scale.y);
 
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "My stupid Game");
+    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
+    View view(window, world.getPlayer(), 200.0f * scale.x);
+
+    world.soundManager.playSoundTrack();
+
+    sf::Font font;
+    font.loadFromFile("resources/font/Font.ttf");
 
     std::string fpsString = "FPS: \n";
     std::string worldStats;
     std::string statString;
 
-    sf::Text stats;
-    stats.setString(fpsString + statString);
-
-    sf::Font font;
-    font.loadFromFile("resources/font/Font.ttf");
-
-    stats.setFont(font);
-    stats.setCharacterSize(12);
+    sf::Text stats(fpsString + statString, font, 12);
     stats.setFillColor(sf::Color::Green);
-
-    world.soundManager.playSoundTrack();
-
-    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
-    View view(window, world.getPlayer(), 200.0f * scale.x);
 
     // Add floor and a few platforms
     addPillar(world, sf::Vector2f(60, referenceHeight - 50), 20, 50);
