@@ -69,8 +69,5 @@ void Enemy::repositionHitBox() {
 }
 
 bool Enemy::isAttacked(Moveable* player) const {
-    if (World::doRectanglesOverlap(hitBox_, player->getRectangle()))
-        return true;
-    else
-        return false;
+    return World::doRectanglesOverlap(hitBox_, player->getRectangle());
 }
