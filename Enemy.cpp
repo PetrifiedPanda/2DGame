@@ -18,12 +18,12 @@ void Enemy::update(const float elapsedTime, sf::RenderWindow& window, World& wor
     }
 
     sf::Vector2f direction(0, 0);
-    const float movementDistance = world.getMovementSpeed() / 2.0f * elapsedTime;
+    const sf::Vector2f movement(world.getMovementSpeed() / 2.0f * elapsedTime, 0);
 
     if (movingLeft_)
-        direction += sf::Vector2f(-movementDistance, 0);
+        direction -= movement;
     else
-        direction += sf::Vector2f(movementDistance, 0);
+        direction += movement;
 
     if (world.canMoveInDirection(this, direction)) {
         move(direction);
