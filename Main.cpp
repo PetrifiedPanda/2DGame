@@ -226,10 +226,10 @@ void handleWindowResize(sf::Event& event) {
     scaleFactorY = static_cast<float>(windowHeight) / referenceHeight;
 
     // Reassign world properties
-    movementSpeed = 100.0f * scaleFactorX;
-    gravity = 200.0f * scaleFactorY;
-    groundWidth = 10.0f * scaleFactorY;
-    playerSize = sf::Vector2f(10.0f * scaleFactorX, 10.0f * scaleFactorY);
+    movementSpeed = movementSpeed / oldScaleFactorX * scaleFactorX;
+    gravity = gravity / oldScaleFactorY * scaleFactorY;
+    groundWidth = groundWidth / oldScaleFactorY * scaleFactorY;
+    playerSize = sf::Vector2f(playerSize.x / oldScaleFactorX * scaleFactorX, playerSize.y / oldScaleFactorY * scaleFactorY);
 
     /*
 	TODO:
