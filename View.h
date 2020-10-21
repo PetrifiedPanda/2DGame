@@ -19,7 +19,7 @@ class View {
     Vector2f prevPlayerPos_;
 
     float scrollingSpeed_;
-    float originalPlayerSize_;
+    sf::Vector2f originalPlayerSize_;
 
    public:
     View(sf::RenderWindow& window, Player* player, float scrollingSpeed);

@@ -7,7 +7,7 @@ View::View(sf::RenderWindow& window, Player* player, float scrollingSpeed)
       windowView_(window.getDefaultView()),
       statView_(window.getDefaultView()),
       player_(player),
-      originalPlayerSize_(player->getSize().y),
+      originalPlayerSize_(player->getSize()),
       scrollingSpeed_(scrollingSpeed) {}
 
 void View::update(const float elapsedTime) {
@@ -31,7 +31,7 @@ void View::update(const float elapsedTime) {
         newCenter -= sf::Vector2f(scrollingDistance, 0);
     }
 
-    if (playerMovement.y > 0 && playerPosOnWindow.y + playerSize.y > windowHeight_ - originalPlayerSize_ * 2) {  // Player is moving down
+    if (playerMovement.y > 0 && playerPosOnWindow.y + playerSize.y > windowHeight_ - originalPlayerSize_.y * 2) {  // Player is moving down
         newCenter += sf::Vector2f(0, scrollingDistance);
     } else if (playerMovement.y < 0 && playerPosOnWindow.y < windowHeight_ / 5 * 3) {  // Player is moving up
         newCenter -= sf::Vector2f(0, scrollingDistance);
@@ -57,7 +57,7 @@ void View::windowResize(sf::RenderWindow& window, sf::Vector2f scale) {
 
     scrollingSpeed_ *= scale.x;
 
-    originalPlayerSize_ *= scale.x;
+    originalPlayerSize_ = sf::Vector2f(originalPlayerSize_.x * scale.x, originalPlayerSize_.y * scale.y);
 }
 
 const sf::View& View::getWindowView() const {
