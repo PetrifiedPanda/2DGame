@@ -50,7 +50,7 @@ float World::getMovementSpeed() const {
     return movementSpeed_;
 }
 
-void World::scale(sf::Vector2f scale) {
+void World::scale(const sf::Vector2f& scale) {
     movementSpeed_ *= scale.x;
     gravity_ *= scale.y;
 
