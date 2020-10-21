@@ -167,7 +167,6 @@ int main() {
 }
 
 void addFloor(World& world) {
-    Timer timer("addFloor", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape floor;
@@ -180,7 +179,6 @@ void addFloor(World& world) {
 }
 
 void addPlatform(World& world, const sf::Vector2f& position, const float length) {
-    Timer timer("addPlatform", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape platform;
@@ -192,7 +190,6 @@ void addPlatform(World& world, const sf::Vector2f& position, const float length)
 }
 
 void addPillar(World& world, const sf::Vector2f& position, const float width, const float height) {
-    Timer timer("addPillar", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape pillar;
