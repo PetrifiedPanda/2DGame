@@ -11,6 +11,8 @@ enum class MoveableType {
 };
 
 class Moveable {
+    friend class World;
+
     static const int s_idNullValue = -1;
     int id_;
 
