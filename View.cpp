@@ -41,11 +41,30 @@ void View::update(const float elapsedTime) {
     prevPlayerPos_ = player_->getPosition();
 }
 
-sf::View View::getWindowView() const {
+void View::windowResize(sf::RenderWindow& window, sf::Vector2f scale) {
+    windowWidth_ = window.getSize().x;
+    windowHeight_ = window.getSize().y;
+
+    sf::Vector2f center(windowView_.getCenter().x * scale.x, windowView_.getCenter().y * scale.y);
+    sf::FloatRect visibleArea(0, 0, window.getSize().x, window.getSize().y);  // Change visible area to new window size
+    windowView_ = sf::View(visibleArea);
+    windowView_.setCenter(center);
+    statView_ = sf::View(visibleArea);
+    viewDifference_ = statView_.getCenter() - windowView_.getCenter();
+
+    prevPlayerPos_ = sf::Vector2f(prevPlayerPos_.x * scale.x,
+                                  prevPlayerPos_.y * scale.y);
+
+    scrollingSpeed_ *= scale.x;
+
+    originalPlayerSize_ *= scale.x;
+}
+
+const sf::View& View::getWindowView() const {
     return windowView_;
 }
 
-sf::View View::getStatView() const {
+const sf::View& View::getStatView() const {
     return statView_;
 }
 
