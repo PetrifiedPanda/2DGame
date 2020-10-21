@@ -278,10 +278,8 @@ Moveable* World::getPlayer() const {
 }
 
 void World::update(const float elapsedTime, sf::RenderWindow& window, Moveable* draggedMoveable) {
-    for (Moveable* moveable : killNextFrame_)
-        deleteMoveable(moveable);
-
-    killNextFrame_.clear();
+    if (!killNextFrame_.empty())
+        deleteKilledMoveables();
 
     for (auto& moveable : moveables_) {
         if (moveable.get() != draggedMoveable) {
@@ -319,4 +317,24 @@ void World::deleteMoveable(Moveable* moveable) {
             break;
         }
     }
+}
+
+void World::deleteKilledMoveables() {
+    std::vector<std::vector<std::unique_ptr<Moveable>>::iterator> toDelete(killNextFrame_.size());
+
+    auto currentKilledIndex = 0;
+    for (auto it = moveables_.begin(); it != moveables_.end(); ++it) {
+        // We only have to check the last element of killNextFrame_ that wasn't already found,
+        // because killedMoveables_ is ordered the same as moveables_ due to the update loop
+        if (it->get() == killNextFrame_[currentKilledIndex]) {
+            toDelete[currentKilledIndex] = it;
+            if (++currentKilledIndex == killNextFrame_.size())
+                break;
+        }
+    }
+
+    for (const auto& it : toDelete)
+        moveables_.erase(it);
+
+    killNextFrame_.clear();
 }

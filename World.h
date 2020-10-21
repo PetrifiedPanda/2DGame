@@ -65,6 +65,8 @@ class World {
    private:
     void deleteMoveable(Moveable* moveable);
 
+    void deleteKilledMoveables();
+
     static bool cornersInsideRectangle(const sf::RectangleShape& rect, const std::array<sf::Vector2f, 4>& corners);
     static std::array<sf::Vector2f, 4> findCorners(const sf::Vector2f& position, const sf::Vector2f& size);
 };
