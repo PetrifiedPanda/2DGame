@@ -44,6 +44,8 @@ class World {
     float getGravity() const;
     float getMovementSpeed() const;
 
+    void scale(sf::Vector2f scale);
+
     sf::Vector2f getMaxMovement(Moveable* moveable, const sf::Vector2f& direction);
     sf::Vector2f getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const sf::Vector2f& direction);
 

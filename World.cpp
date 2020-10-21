@@ -50,6 +50,29 @@ float World::getMovementSpeed() const {
     return movementSpeed_;
 }
 
+void World::scale(sf::Vector2f scale) {
+    movementSpeed_ *= scale.x;
+    gravity_ *= scale.y;
+
+    for (auto& rect : staticRectangles_) {
+        sf::Vector2f size = rect.getSize();
+        sf::Vector2f position = rect.getPosition();
+        rect.setSize(sf::Vector2f(size.x * scale.x,
+                                  size.y * scale.y));
+        rect.setPosition(sf::Vector2f(position.x * scale.x,
+                                      position.y * scale.y));
+    }
+
+    for (auto& moveable : moveables_) {
+        sf::Vector2f size = moveable->getSize();
+        sf::Vector2f position = moveable->getPosition();
+        moveable->setSize(sf::Vector2f(size.x * scale.x,
+                                       size.y * scale.y));
+        moveable->setPosition(sf::Vector2f(position.x * scale.x,
+                                           position.y * scale.y));
+    }
+}
+
 // This is parts of an attempt to make alternative collision checks
 sf::Vector2f World::getMaxMovement(Moveable* moveable, const sf::Vector2f& direction) {
     const sf::Vector2f size = moveable->getSize();
