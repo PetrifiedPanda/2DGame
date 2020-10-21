@@ -14,17 +14,16 @@ void GrowingPlayer::update(const float elapsedTime, sf::RenderWindow& window, Wo
         } else {
             const float growthFactor = world.getMovementSpeed() / 10.0f * elapsedTime;
 
-            float newSizeX = growthFactor + size.x;
-            float newSizeY = growthFactor + size.y;
+            sf::Vector2f newSize(growthFactor + size.x, growthFactor + size.y);
 
-            if (newSizeX > growthTarget_.x)
-                newSizeX = growthTarget_.x;
+            if (newSize.x > growthTarget_.x)
+                newSize.x = growthTarget_.x;
 
-            if (newSizeY > growthTarget_.y)
-                newSizeY = growthTarget_.y;
+            if (newSize.y > growthTarget_.y)
+                newSize.y = growthTarget_.y;
 
             const sf::Vector2f oldPosition = getPosition();
-            setSize(sf::Vector2f(newSizeX, newSizeY));
+            setSize(newSize);
             move(sf::Vector2f(-growthFactor, -growthFactor));
 
             if (!world.canMoveInDirection(this, sf::Vector2f(0, 0))) {
