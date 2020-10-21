@@ -15,9 +15,9 @@ void World::addMoveable(std::unique_ptr<Moveable>&& moveable) {
     }
 }
 
-void World::addRectangle(const sf::RectangleShape& rectangle) {
+void World::addRectangle(sf::RectangleShape&& rectangle) {
     if (staticRectangles_.size() < static_cast<size_t>(s_rectangleLimit))
-        staticRectangles_.push_back(rectangle);
+        staticRectangles_.push_back(std::move(rectangle));
 }
 
 void World::addPlayer(std::unique_ptr<Moveable>&& player) {

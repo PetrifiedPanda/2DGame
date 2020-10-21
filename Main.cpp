@@ -167,6 +167,7 @@ int main() {
 }
 
 void addFloor(World& world) {
+    Timer timer("addFloor", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape floor;
@@ -175,10 +176,11 @@ void addFloor(World& world) {
     floor.setSize(sf::Vector2f(windowWidth * 2, groundWidth));
     floor.setPosition(sf::Vector2f(-windowWidth, windowHeight));
 
-    world.addRectangle(floor);
+    world.addRectangle(std::move(floor));
 }
 
 void addPlatform(World& world, const sf::Vector2f& position, const float length) {
+    Timer timer("addPlatform", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape platform;
@@ -186,10 +188,11 @@ void addPlatform(World& world, const sf::Vector2f& position, const float length)
     platform.setSize(sf::Vector2f(length * scale.x, platformWidth));
     platform.setPosition(sf::Vector2f(position.x * scale.x, position.y * scale.y));
 
-    world.addRectangle(platform);
+    world.addRectangle(std::move(platform));
 }
 
 void addPillar(World& world, const sf::Vector2f& position, const float width, const float height) {
+    Timer timer("addPillar", g_averageCollector);
     const Colors colors;
 
     sf::RectangleShape pillar;
@@ -197,7 +200,7 @@ void addPillar(World& world, const sf::Vector2f& position, const float width, co
     pillar.setSize(sf::Vector2f(width * scale.x, height * scale.y));
     pillar.setPosition(sf::Vector2f(position.x * scale.x, position.y * scale.y));
 
-    world.addRectangle(pillar);
+    world.addRectangle(std::move(pillar));
 }
 
 void spawnEnemy(World& world, const sf::Vector2f& position) {

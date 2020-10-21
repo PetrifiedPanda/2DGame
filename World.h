@@ -33,7 +33,7 @@ class World {
     World(float movementSpeed = 100.0f, float gravity = 0.0f);
 
     void addMoveable(std::unique_ptr<Moveable>&& moveable);
-    void addRectangle(const sf::RectangleShape& rectangle);
+    void addRectangle(sf::RectangleShape&& rectangle);
     void addPlayer(std::unique_ptr<Moveable>&& player);
 
     void killMoveable(Moveable* moveable);
