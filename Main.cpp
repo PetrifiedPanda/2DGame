@@ -70,7 +70,7 @@ int main() {
     world.soundManager.playSoundTrack();
 
     world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
-    View view(window, dynamic_cast<Player*>(world.getPlayer()), 200.0f * scale.x);
+    View view(window, world.getPlayer(), 200.0f * scale.x);
 
     // Add floor and a few platforms
     addPillar(world, sf::Vector2f(60, referenceHeight - 50), 20, 50);

@@ -1,23 +1,23 @@
 #include "View.h"
 
-View::View(sf::RenderWindow& window, Player* player, float scrollingSpeed)
+View::View(sf::RenderWindow& window, Moveable* followed, float scrollingSpeed)
     : windowWidth_(window.getSize().x),
       windowHeight_(window.getSize().y),
       viewDifference_(0.0f, 0.0f),
       windowView_(window.getDefaultView()),
       statView_(window.getDefaultView()),
-      player_(player),
-      originalPlayerSize_(player->getSize()),
+      followed_(followed),
+      originalPlayerSize_(followed->getSize()),
       scrollingSpeed_(scrollingSpeed) {}
 
 void View::update(const float elapsedTime) {
     viewDifference_ = statView_.getCenter() - windowView_.getCenter();
 
-    const sf::Vector2f playerPosOnWindow = getPositionOnWindow(player_->getPosition());
+    const sf::Vector2f followedPosOnWindow = getPositionOnWindow(followed_->getPosition());
 
-    const sf::Vector2f playerMovement = playerPosOnWindow - getPositionOnWindow(prevPlayerPos_);
+    const sf::Vector2f followedMovement = followedPosOnWindow - getPositionOnWindow(prevPlayerPos_);
 
-    const sf::Vector2f playerSize = player_->getSize();
+    const sf::Vector2f followedSize = followed_->getSize();
 
     sf::Vector2f newCenter = windowView_.getCenter();
 
@@ -25,20 +25,20 @@ void View::update(const float elapsedTime) {
 
     const float scrollingDistance = scrollingSpeed_ * elapsedTime;
 
-    if (playerMovement.x > 0 && playerPosOnWindow.x + playerSize.x > windowWidthFifth * 2) {  // Player is moving right
+    if (followedMovement.x > 0 && followedPosOnWindow.x + followedSize.x > windowWidthFifth * 2) {  // Player is moving right
         newCenter += sf::Vector2f(scrollingDistance, 0);
-    } else if (playerMovement.x < 0 && playerPosOnWindow.x < windowWidthFifth * 3) {  // Player is moving left
+    } else if (followedMovement.x < 0 && followedPosOnWindow.x < windowWidthFifth * 3) {  // Player is moving left
         newCenter -= sf::Vector2f(scrollingDistance, 0);
     }
 
-    if (playerMovement.y > 0 && playerPosOnWindow.y + playerSize.y > windowHeight_ - originalPlayerSize_.y * 2) {  // Player is moving down
+    if (followedMovement.y > 0 && followedPosOnWindow.y + followedSize.y > windowHeight_ - originalPlayerSize_.y * 2) {  // Player is moving down
         newCenter += sf::Vector2f(0, scrollingDistance);
-    } else if (playerMovement.y < 0 && playerPosOnWindow.y < windowHeight_ / 5 * 3) {  // Player is moving up
+    } else if (followedMovement.y < 0 && followedPosOnWindow.y < windowHeight_ / 5 * 3) {  // Player is moving up
         newCenter -= sf::Vector2f(0, scrollingDistance);
     }
 
     windowView_.setCenter(newCenter);
-    prevPlayerPos_ = player_->getPosition();
+    prevPlayerPos_ = followed_->getPosition();
 }
 
 void View::windowResize(sf::RenderWindow& window, sf::Vector2f scale) {

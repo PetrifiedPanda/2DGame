@@ -2,7 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Player.h"
+#include "Moveable.h"
 
 using sf::Vector2f;
 
@@ -15,14 +15,14 @@ class View {
 
     Vector2f viewDifference_;
 
-    Player* player_;
+    Moveable* followed_;
     Vector2f prevPlayerPos_;
 
     float scrollingSpeed_;
     sf::Vector2f originalPlayerSize_;
 
    public:
-    View(sf::RenderWindow& window, Player* player, float scrollingSpeed);
+    View(sf::RenderWindow& window, Moveable* followed, float scrollingSpeed);
 
     void update(float elapsedTime);
 
