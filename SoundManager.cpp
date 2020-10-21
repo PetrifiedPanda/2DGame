@@ -12,6 +12,7 @@ SoundManager::SoundManager(const std::string& soundTrackFile, const std::string&
     soundtrackSound_.setLoop(true);
 
     pauseSound_.setBuffer(pauseBuffer_);
+    pauseSound_.setVolume(g_effectVolume * (g_masterVolume / 100));
 
     deadIDs_.reserve(soundLimit);
 }
