@@ -2,8 +2,8 @@
 
 SplitterEnemy::SplitterEnemy(int generationNum) : Enemy(), generationNum_(generationNum) {}
 
-SplitterEnemy::SplitterEnemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, int generationNum)
-    : Enemy(position, size, enemyColor), generationNum_(generationNum) {}
+SplitterEnemy::SplitterEnemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, bool movingLeft, int generationNum)
+    : Enemy(position, size, enemyColor, movingLeft), generationNum_(generationNum) {}
 
 void SplitterEnemy::onDeath(World& world) {
     if (generationNum_ != s_numChildSpawns) {
@@ -17,11 +17,11 @@ void SplitterEnemy::onDeath(World& world) {
 
         SplitterEnemy enemy1(enemy1Pos, enemySize, getFillColor(), nextGenNum);
         if (world.canMoveInDirection(&enemy1, zeroVec))
-            world.addMoveable(std::make_unique<SplitterEnemy>(enemy1Pos, enemySize, getFillColor(), nextGenNum));
+            world.addMoveable(std::make_unique<SplitterEnemy>(enemy1Pos, enemySize, getFillColor(), true, nextGenNum));
 
         SplitterEnemy enemy2 = SplitterEnemy(enemy2Pos, enemySize, getFillColor(), nextGenNum);
         if (world.canMoveInDirection(&enemy2, zeroVec))
-            world.addMoveable(std::make_unique<SplitterEnemy>(enemy2Pos, enemySize, getFillColor(), nextGenNum));
+            world.addMoveable(std::make_unique<SplitterEnemy>(enemy2Pos, enemySize, getFillColor(), false, nextGenNum));
     }
 }
 

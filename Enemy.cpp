@@ -2,8 +2,8 @@
 
 Enemy::Enemy() : Moveable(), hitBox_(), movingLeft_(false) {}
 
-Enemy::Enemy(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color enemyColor)
-    : Moveable(), hitBox_(), movingLeft_(false) {
+Enemy::Enemy(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color enemyColor, bool movingLeft)
+    : Moveable(), hitBox_(), movingLeft_(movingLeft) {
     setFillColor(enemyColor);
     Enemy::setSize(size);
     Enemy::setPosition(position);

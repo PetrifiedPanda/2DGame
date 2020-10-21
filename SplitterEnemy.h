@@ -8,7 +8,7 @@ class SplitterEnemy : public Enemy {
 
    public:
     SplitterEnemy(int generationNum = 0);
-    SplitterEnemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, int generationNum = 0);
+    SplitterEnemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, bool movingLeft = false, int generationNum = 0);
 
     void onDeath(World& world) override;
 

@@ -12,7 +12,7 @@ class Enemy : public Moveable {
 
    public:
     Enemy();
-    Enemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor);
+    Enemy(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color enemyColor, bool movingLeft = false);
 
     void update(float elapsedTime, sf::RenderWindow& window, World& world) override;
 
