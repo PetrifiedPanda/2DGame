@@ -105,7 +105,7 @@ int main() {
         time1 = time2;
 
         float elapsedTime = elapsed.count();
-#ifdef EDITOR
+        #ifdef EDITOR
         if (draggedMoveable != nullptr && !world.containsMoveable(draggedMoveable))
             draggedMoveable = nullptr;
 
@@ -114,11 +114,11 @@ int main() {
 
         if (draggedMoveable != nullptr)
             draggedMoveable->setPosition(view.getPositionInGame(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) + mouseOffset));
-#endif
+        #endif
 
         if (frames == updateFrames) {
-// Update stats
-#ifdef EDITOR
+            // Update stats
+            #ifdef EDITOR
             worldStats =
                 "Cores: " + std::to_string(omp_get_max_threads()) + "\n" +
                 "Moveables: " + std::to_string(world.getMoveableCount()) + "\n" +
@@ -126,7 +126,7 @@ int main() {
 
             if (selectedMoveable != nullptr)
                 statString = selectedMoveable->toString();
-#endif
+            #endif
 
             // Calculate FPS
             std::chrono::duration<float> frameDuration = time2 - fpsTime;
@@ -231,9 +231,9 @@ void handleWindowEvents(sf::RenderWindow& window, World& world, bool& pause, boo
 
         if (event.type == sf::Event::Resized)
             handleWindowResize(event, window, world, view);
-#ifdef EDITOR
+        #ifdef EDITOR
         handleMouseEvents(event, world, window, view, mouseOffset, selectedMoveable, draggedMoveable);
-#endif
+        #endif
 
         handleKeyboardEvents(event, world, pause, pauseReleased);
     }
