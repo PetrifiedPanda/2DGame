@@ -73,83 +73,6 @@ void World::scale(const sf::Vector2f& scale) {
     }
 }
 
-// This is parts of an attempt to make alternative collision checks
-sf::Vector2f World::getMaxMovement(Moveable* moveable, const sf::Vector2f& direction) {
-    const sf::Vector2f size = moveable->getSize();
-    const sf::RectangleShape& rect = moveable->getRectangle();
-
-    float xDir = direction.x;
-    float yDir = direction.y;
-
-    const int staticRectSize = staticRectangles_.size();
-
-    sf::Vector2f tmp = direction;
-
-#pragma omp parallel for private(xDir, yDir)
-    for (int i = 0; i < staticRectSize; ++i) {
-        tmp = getDistanceUntilCollision(rect, staticRectangles_[i], direction);
-        xDir = tmp.x;
-        yDir = tmp.y;
-    }
-
-    const int moveablesSize = moveables_.size();
-
-#pragma omp parallel for private(xDir, yDir)
-    for (int i = 0; i < moveablesSize; ++i) {
-        tmp = getDistanceUntilCollision(rect, moveables_[i]->getRectangle(), direction);
-        xDir = tmp.x;
-        yDir = tmp.y;
-    }
-
-    if (xDir > 0 && yDir > 0) {
-        // min min
-    } else if (xDir <= 0 && yDir <= 0) {
-        // max max
-    } else if (xDir > 0 && yDir <= 0) {
-        // min max
-    } else {
-        // max min
-    }
-
-#pragma omp barrier
-
-    return tmp;
-}
-
-sf::Vector2f World::getDistanceUntilCollision(const sf::RectangleShape& rect1, const sf::RectangleShape& rect2, const sf::Vector2f& direction) {
-    const sf::Vector2f pos1 = rect1.getPosition();
-    const sf::Vector2f sizePos1 = pos1 + rect1.getSize();
-
-    const sf::Vector2f pos2 = rect2.getPosition();
-    const sf::Vector2f sizePos2 = pos2 + rect2.getSize();
-
-    sf::Vector2f result;
-
-    if (sizePos1.x < pos2.x)
-        result.x = pos2.x - sizePos1.x;
-    else
-        result.x = sizePos2.x - pos1.x;
-
-    if (sizePos1.y < pos2.y)
-        result.y = pos2.y - sizePos1.y;
-    else
-        result.y = sizePos2.y - pos1.x;
-
-    if (direction.x < 0 && result.x > 0 || direction.x > 0 && result.x < 0)
-        result.x = direction.x;
-
-    if (direction.y < 0 && result.y > 0 || direction.y > 0 && result.y < 0)
-        result.y = direction.y;
-
-    if (direction.x == 0)
-        result.x = 0;
-
-    if (direction.y == 0)
-        result.y = 0;
-
-    return result;
-}
-
 bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction) {
     const sf::Vector2f newPosition = moveable->getPosition() + direction;
     const sf::Vector2f size = moveable->getSize();
@@ -160,8 +83,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
     const int staticRectSize = staticRectangles_.size();
     bool foundCollision = false;
 
-#pragma omp parallel for reduction(|| \
-                                   : foundCollision)
+#pragma omp parallel for reduction(||: foundCollision)
     for (int i = 0; i < staticRectSize; ++i)
         if (doRectanglesOverlap(staticRectangles_[i], size, corners))
             foundCollision = true;
@@ -172,8 +94,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
     // Check collision with enemies
     const int moveablesSize = moveables_.size();
 
-#pragma omp parallel for reduction(|| \
-                                   : foundCollision)
+#pragma omp parallel for reduction(||: foundCollision)
     for (int i = 0; i < moveablesSize; ++i) {
         const sf::RectangleShape& rect = moveables_[i]->getRectangle();
 
