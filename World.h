@@ -39,8 +39,8 @@ class World {
 
     void killMoveable(Moveable* moveable);
 
-    int getMoveableCount() const;
-    int getStaticRectangleCount() const;
+    size_t getMoveableCount() const;
+    size_t getStaticRectangleCount() const;
 
     float getGravity() const;
     float getMovementSpeed() const;

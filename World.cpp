@@ -21,7 +21,7 @@ void World::addMoveable(Moveable* moveable) {
 }
 
 void World::addRectangle(sf::RectangleShape&& rectangle) {
-    if (staticRectangles_.size() < static_cast<size_t>(s_rectangleLimit))
+    if (staticRectangles_.size() < s_rectangleLimit)
         staticRectangles_.push_back(std::move(rectangle));
 }
 
@@ -39,11 +39,11 @@ void World::killMoveable(Moveable* moveable) {
     killNextFrame_.push_back(moveable);
 }
 
-int World::getMoveableCount() const {
+size_t World::getMoveableCount() const {
     return moveables_.size();
 }
 
-int World::getStaticRectangleCount() const {
+size_t World::getStaticRectangleCount() const {
     return staticRectangles_.size();
 }
 
