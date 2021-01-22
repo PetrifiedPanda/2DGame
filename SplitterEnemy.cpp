@@ -17,11 +17,11 @@ void SplitterEnemy::onDeath(World& world) {
 
         SplitterEnemy enemy1(enemy1Pos, enemySize, getFillColor(), nextGenNum);
         if (world.canMoveInDirection(&enemy1, zeroVec))
-            world.addMoveable(std::make_unique<SplitterEnemy>(enemy1Pos, enemySize, getFillColor(), true, nextGenNum));
+            world.addMoveable(new SplitterEnemy(enemy1Pos, enemySize, getFillColor(), true, nextGenNum));
 
         SplitterEnemy enemy2 = SplitterEnemy(enemy2Pos, enemySize, getFillColor(), nextGenNum);
         if (world.canMoveInDirection(&enemy2, zeroVec))
-            world.addMoveable(std::make_unique<SplitterEnemy>(enemy2Pos, enemySize, getFillColor(), false, nextGenNum));
+            world.addMoveable(new SplitterEnemy(enemy2Pos, enemySize, getFillColor(), false, nextGenNum));
     }
 }
 

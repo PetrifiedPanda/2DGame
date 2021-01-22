@@ -6,9 +6,14 @@ World::World(const float movementSpeed, const float gravity) : idCounter_(0), mo
     killNextFrame_.reserve(5);
 }
 
-void World::addMoveable(std::unique_ptr<Moveable>&& moveable) {
-    if (moveables_.size() < static_cast<size_t>(s_moveableLimit)) {
-        moveables_.push_back(std::move(moveable));
+World::~World() {
+    for (Moveable* moveable : moveables_)
+        delete moveable;
+}
+
+void World::addMoveable(Moveable* moveable) {
+    if (moveables_.size() < s_moveableLimit) {
+        moveables_.push_back(moveable);
         moveables_[moveables_.size() - 1]->setID(idCounter_);
         soundManager.addEntitySound(idCounter_);
         ++idCounter_;
@@ -20,12 +25,12 @@ void World::addRectangle(sf::RectangleShape&& rectangle) {
         staticRectangles_.push_back(std::move(rectangle));
 }
 
-void World::addPlayer(std::unique_ptr<Moveable>&& player) {
-    if (moveables_.size() < static_cast<size_t>(s_moveableLimit)) {
-        player_ = player.get();
-        moveables_.push_back(std::move(player));
+void World::addPlayer(Moveable* player) {
+    if (moveables_.size() < s_moveableLimit) {
+        player_ = player;
+        moveables_.push_back(player);
         moveables_[moveables_.size() - 1]->setID(idCounter_);
-        idCounter_++;
+        ++idCounter_;
     }
 }
 
@@ -98,7 +103,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
     for (int i = 0; i < moveablesSize; ++i) {
         const sf::RectangleShape& rect = moveables_[i]->getRectangle();
 
-        if (moveables_[i].get() == moveable)
+        if (moveables_[i] == moveable)
             continue;
 
         if (doRectanglesOverlap(rect, size, corners))
@@ -203,7 +208,7 @@ void World::update(const float elapsedTime, sf::RenderWindow& window, Moveable* 
         deleteKilledMoveables();
 
     for (auto& moveable : moveables_) {
-        if (moveable.get() != draggedMoveable) {
+        if (moveable != draggedMoveable) {
             moveable->update(elapsedTime, window, *this);
             moveable->gravityUpdate(elapsedTime, window, *this);
         }
@@ -216,7 +221,7 @@ Moveable* World::isOnMoveable(const sf::Vector2f& position) {
         const sf::Vector2f lowerRight = upperLeft + moveable->getSize();
 
         if (position.x >= upperLeft.x && position.x <= lowerRight.x && position.y >= upperLeft.y && position.y <= lowerRight.y)
-            return moveable.get();
+            return moveable;
     }
 
     return nullptr;
@@ -224,7 +229,7 @@ Moveable* World::isOnMoveable(const sf::Vector2f& position) {
 
 bool World::containsMoveable(Moveable* moveable) {
     for (auto& ptr : moveables_) {
-        if (ptr.get() == moveable)
+        if (ptr == moveable)
             return true;
     }
 
@@ -233,7 +238,8 @@ bool World::containsMoveable(Moveable* moveable) {
 
 void World::deleteMoveable(Moveable* moveable) {
     for (auto it = moveables_.begin(); it != moveables_.end(); ++it) {
-        if (it->get() == moveable) {
+        if (*it == moveable) {
+            delete *it;
             moveables_.erase(it);
             break;
         }
@@ -241,21 +247,23 @@ void World::deleteMoveable(Moveable* moveable) {
 }
 
 void World::deleteKilledMoveables() {
-    std::vector<std::vector<std::unique_ptr<Moveable>>::iterator> toDelete(killNextFrame_.size());
+    std::vector<std::vector<Moveable*>::iterator> toDelete(killNextFrame_.size());
 
     auto currentKilledIndex = 0;
     for (auto it = moveables_.begin(); it != moveables_.end(); ++it) {
         // We only have to check the last element of killNextFrame_ that wasn't already found,
         // because killedMoveables_ is ordered the same as moveables_ due to the update loop
-        if (it->get() == killNextFrame_[currentKilledIndex]) {
+        if (*it == killNextFrame_[currentKilledIndex]) {
             toDelete[currentKilledIndex] = it;
             if (++currentKilledIndex == killNextFrame_.size())
                 break;
         }
     }
 
-    for (const auto& it : toDelete)
+    for (const auto& it : toDelete) {
+        delete *it;
         moveables_.erase(it);
+    }
 
     killNextFrame_.clear();
 }

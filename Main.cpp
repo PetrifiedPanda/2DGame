@@ -52,7 +52,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "My stupid Game");
     World world(100.0f * scale.x, 200.0f * scale.y);
 
-    world.addPlayer(std::make_unique<GrowingPlayer>(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
+    world.addPlayer(new GrowingPlayer(sf::Vector2f(0, static_cast<float>(windowHeight) - 30.0f * scale.y), playerSize, Colors().playerColor));
     View view(window, world.getPlayer(), 200.0f * scale.x);
 
     world.soundManager.playSoundTrack();
@@ -198,10 +198,10 @@ void addPillar(World& world, const sf::Vector2f& position, const float width, co
 void spawnEnemy(World& world, const sf::Vector2f& position) {
     const Colors colors;
     sf::Vector2f size(playerSize.x * 4.0f, playerSize.y * 4.0f);
-    Enemy enemy(position, size, colors.enemyColor);
+    SplitterEnemy enemy(position, size, colors.enemyColor);
 
     if (world.canMoveInDirection(&enemy, sf::Vector2f(0, 0)))
-        world.addMoveable(std::make_unique<SplitterEnemy>(position, size, colors.enemyColor));
+        world.addMoveable(new SplitterEnemy(position, size, colors.enemyColor));
 }
 
 void handleWindowResize(sf::Event& event, sf::RenderWindow& window, World& world, View& view) {

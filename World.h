@@ -14,7 +14,7 @@ class Moveable;
 
 class World {
     std::vector<sf::RectangleShape> staticRectangles_;
-    std::vector<std::unique_ptr<Moveable>> moveables_;
+    std::vector<Moveable*> moveables_;
 
     std::vector<Moveable*> killNextFrame_;
 
@@ -25,16 +25,17 @@ class World {
     float movementSpeed_;
     float gravity_;
 
-    static const short s_rectangleLimit = 500;
-    static const short s_moveableLimit = 128;
+    static const size_t s_rectangleLimit = 500;
+    static const size_t s_moveableLimit = 128;
 
    public:
     SoundManager soundManager = SoundManager("resources/sound/BackgroundMusic.wav", "resources/sound/Collision.wav", "resources/sound/Death.wav", "resources/sound/Pause.wav");
     World(float movementSpeed = 100.0f, float gravity = 0.0f);
+    ~World();
 
-    void addMoveable(std::unique_ptr<Moveable>&& moveable);
+    void addMoveable(Moveable* moveable);
     void addRectangle(sf::RectangleShape&& rectangle);
-    void addPlayer(std::unique_ptr<Moveable>&& player);
+    void addPlayer(Moveable* player);
 
     void killMoveable(Moveable* moveable);
 
