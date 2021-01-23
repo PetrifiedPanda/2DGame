@@ -59,7 +59,7 @@ void World::scale(const sf::Vector2f& scale) {
     movementSpeed_ *= scale.x;
     gravity_ *= scale.y;
 
-    for (auto& rect : staticRectangles_) {
+    for (sf::RectangleShape& rect : staticRectangles_) {
         sf::Vector2f size = rect.getSize();
         sf::Vector2f position = rect.getPosition();
         rect.setSize(sf::Vector2f(size.x * scale.x,
@@ -68,7 +68,7 @@ void World::scale(const sf::Vector2f& scale) {
                                       position.y * scale.y));
     }
 
-    for (auto& moveable : moveables_) {
+    for (Moveable* moveable : moveables_) {
         sf::Vector2f size = moveable->getSize();
         sf::Vector2f position = moveable->getPosition();
         moveable->setSize(sf::Vector2f(size.x * scale.x,
@@ -88,7 +88,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
     const int staticRectSize = staticRectangles_.size();
     bool foundCollision = false;
 
-#pragma omp parallel for reduction(||: foundCollision)
+    #pragma omp parallel for reduction(||: foundCollision)
     for (int i = 0; i < staticRectSize; ++i)
         if (doRectanglesOverlap(staticRectangles_[i], size, corners))
             foundCollision = true;
@@ -99,7 +99,7 @@ bool World::canMoveInDirection(Moveable* moveable, const sf::Vector2f& direction
     // Check collision with enemies
     const int moveablesSize = moveables_.size();
 
-#pragma omp parallel for reduction(||: foundCollision)
+    #pragma omp parallel for reduction(||: foundCollision)
     for (int i = 0; i < moveablesSize; ++i) {
         const sf::RectangleShape& rect = moveables_[i]->getRectangle();
 
