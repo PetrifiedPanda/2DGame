@@ -247,22 +247,14 @@ void World::deleteMoveable(Moveable* moveable) {
 }
 
 void World::deleteKilledMoveables() {
-    std::vector<std::vector<Moveable*>::iterator> toDelete(killNextFrame_.size());
-
-    auto currentKilledIndex = 0;
-    for (auto it = moveables_.begin(); it != moveables_.end(); ++it) {
-        // We only have to check the last element of killNextFrame_ that wasn't already found,
-        // because killedMoveables_ is ordered the same as moveables_ due to the update loop
-        if (*it == killNextFrame_[currentKilledIndex]) {
-            toDelete[currentKilledIndex] = it;
-            if (++currentKilledIndex == killNextFrame_.size())
-                break;
-        }
-    }
-
-    for (const auto& it : toDelete) {
-        delete *it;
-        moveables_.erase(it);
+    auto currentKilledIt = killNextFrame_.begin();
+    auto moveablesIt = moveables_.begin();
+    while (currentKilledIt != killNextFrame_.end()) {
+        while (*moveablesIt != *currentKilledIt)
+            ++moveablesIt;
+        delete *moveablesIt;
+        moveablesIt = moveables_.erase(moveablesIt);
+        ++currentKilledIt;
     }
 
     killNextFrame_.clear();
