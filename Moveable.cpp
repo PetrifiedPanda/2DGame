@@ -59,7 +59,6 @@ void Moveable::addForce(const sf::Vector2f& force) {
 }
 
 void Moveable::die(World& world) {
-    world.soundManager.removeEntity(id_);
     this->onDeath(world);
     world.killMoveable(this);
 }

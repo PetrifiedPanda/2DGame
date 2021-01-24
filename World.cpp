@@ -35,8 +35,8 @@ void World::addPlayer(Moveable* player) {
 }
 
 void World::killMoveable(Moveable* moveable) {
-#pragma omp critical
     killNextFrame_.push_back(moveable);
+    soundManager.removeEntity(moveable->id_);
 }
 
 size_t World::getMoveableCount() const {

@@ -23,7 +23,7 @@ class Moveable {
 
    public:
     explicit Moveable();
-    explicit Moveable(const sf::Vector2f& position, const sf::Vector2f& size);
+    Moveable(const sf::Vector2f& position, const sf::Vector2f& size);
     virtual ~Moveable();
 
     virtual void update(float elapsedTime, sf::RenderWindow& window, World& world) = 0;
